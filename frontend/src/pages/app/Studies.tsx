@@ -80,16 +80,16 @@ export default function Studies() {
             value={newSubjectName}
             onChange={(e) => setNewSubjectName(e.target.value)}
             placeholder="Nueva materia"
-            className="flex-1 rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2"
+            className="input-field flex-1"
           />
-          <button onClick={handleCreateSubject} className="bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-4 py-2 rounded-md text-sm font-medium">
+          <button onClick={handleCreateSubject} className="btn-primary">
             Agregar
           </button>
         </div>
 
         <ul className="space-y-2">
           {subjects.map((s) => (
-            <li key={s.id} className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
+            <li key={s.id} className="surface-card-hover p-4">
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-2 font-medium text-neutral-800 dark:text-neutral-200">
                   <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: categoryColor(s.name) }} />
@@ -98,11 +98,11 @@ export default function Studies() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => setLogFor(logFor === s.id ? null : s.id)}
-                    className="text-sm bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-3 py-1 rounded-md"
+                    className="btn-primary text-sm px-3 py-1"
                   >
                     Registrar sesión
                   </button>
-                  <button onClick={() => handleDeleteSubject(s.id)} className="text-sm text-red-500 dark:text-red-400 px-2">
+                  <button onClick={() => handleDeleteSubject(s.id)} className="text-sm text-red-500 dark:text-red-400 px-2 hover:text-red-600 dark:hover:text-red-300 transition-colors duration-150">
                     Eliminar
                   </button>
                 </div>
@@ -114,15 +114,15 @@ export default function Studies() {
                     value={duration}
                     onChange={(e) => setDuration(Number(e.target.value))}
                     aria-label="Minutos"
-                    className="w-24 rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-2 py-1 text-sm"
+                    className="input-field w-24 px-2 py-1 text-sm"
                   />
                   <input
                     value={topic}
                     onChange={(e) => setTopic(e.target.value)}
                     placeholder="Tema (opcional)"
-                    className="flex-1 rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-2 py-1 text-sm"
+                    className="input-field flex-1 px-2 py-1 text-sm"
                   />
-                  <button onClick={() => handleLogSession(s.id)} className="text-sm bg-accent text-white px-3 py-1.5 rounded-md font-medium">
+                  <button onClick={() => handleLogSession(s.id)} className="btn-accent text-sm px-3 py-1.5">
                     Guardar
                   </button>
                 </div>
@@ -137,7 +137,7 @@ export default function Studies() {
         <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-50 mb-2">Sesiones recientes</h2>
         <ul className="space-y-2">
           {sessions.map((sess) => (
-            <li key={sess.id} className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-3 flex justify-between text-sm">
+            <li key={sess.id} className="surface-card flex justify-between text-sm p-3">
               <span className="text-neutral-800 dark:text-neutral-200">
                 {subjectName(sess.subject_id)}
                 {sess.topic && <span className="text-neutral-400 dark:text-neutral-500"> · {sess.topic}</span>}
@@ -153,12 +153,12 @@ export default function Studies() {
 
       <div>
         <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-50 mb-2">Panorama de estudio</h2>
-        <button onClick={handleShowOverview} className="bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-4 py-2 rounded-md text-sm font-medium mb-3">
+        <button onClick={handleShowOverview} className="btn-secondary mb-3">
           Ver panorama
         </button>
         {locked && <UpgradeWall feature="Panorama de estudio" />}
         {overview && (
-          <table className="w-full text-sm text-left">
+          <table className="w-full text-sm text-left surface-card p-4">
             <thead className="text-xs text-neutral-400 dark:text-neutral-500">
               <tr>
                 <th className="font-medium pb-2">Materia</th>

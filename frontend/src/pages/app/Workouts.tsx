@@ -156,30 +156,30 @@ export default function Workouts() {
             value={exercise}
             onChange={(e) => setExercise(e.target.value)}
             placeholder="Ejercicio"
-            className="rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2 col-span-1"
+            className="input-field col-span-1"
           />
           <input
             type="number"
             value={reps}
             onChange={(e) => setReps(Number(e.target.value))}
             placeholder="Reps"
-            className="rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2"
+            className="input-field"
           />
           <input
             type="number"
             value={weight}
             onChange={(e) => setWeight(Number(e.target.value))}
             placeholder="Kg"
-            className="rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2"
+            className="input-field"
           />
         </div>
-        <button onClick={handleLog} className="bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-4 py-2 rounded-md text-sm font-medium mb-6">
+        <button onClick={handleLog} className="btn-primary mb-6">
           Registrar sesión
         </button>
 
         <ul className="space-y-2">
           {sessions.map((s) => (
-            <li key={s.id} className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
+            <li key={s.id} className="surface-card-hover p-4">
               <p className="font-medium text-neutral-800 dark:text-neutral-200">{s.session_date}</p>
               {s.notes && <p className="text-xs text-neutral-400 dark:text-neutral-500">{s.notes}</p>}
               <ul className="text-sm text-neutral-600 dark:text-neutral-400">
@@ -204,31 +204,31 @@ export default function Workouts() {
             value={newRoutineName}
             onChange={(e) => setNewRoutineName(e.target.value)}
             placeholder="Nombre de la rutina"
-            className="rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2 text-sm"
+            className="input-field text-sm"
           />
           <input
             value={newRoutineExercises}
             onChange={(e) => setNewRoutineExercises(e.target.value)}
             placeholder="Ejercicios separados por coma"
-            className="flex-1 rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2 text-sm"
+            className="input-field flex-1 text-sm"
           />
-          <button onClick={handleCreateRoutine} className="bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-3 py-2 rounded-md text-sm font-medium">
+          <button onClick={handleCreateRoutine} className="btn-primary text-sm px-3 py-2">
             Crear rutina →
           </button>
         </div>
 
         <ul className="space-y-2">
           {routines.map((r) => (
-            <li key={r.id} className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-3 flex items-center justify-between">
+            <li key={r.id} className="surface-card-hover p-3 flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-neutral-800 dark:text-neutral-200">{r.name}</p>
                 <p className="text-xs text-neutral-400 dark:text-neutral-500">{r.exercises.join(", ")}</p>
               </div>
               <div className="flex gap-2">
-                <button onClick={() => handleStartRoutine(r)} className="text-xs bg-accent text-white px-3 py-1.5 rounded-md font-medium">
+                <button onClick={() => handleStartRoutine(r)} className="btn-accent text-xs px-3 py-1.5">
                   Empezar
                 </button>
-                <button onClick={() => handleDeleteRoutine(r.id)} className="text-xs text-red-500 dark:text-red-400 px-2">
+                <button onClick={() => handleDeleteRoutine(r.id)} className="text-xs text-red-500 dark:text-red-400 px-2 hover:text-red-600 dark:hover:text-red-300 transition-colors duration-150">
                   Eliminar
                 </button>
               </div>
@@ -238,7 +238,7 @@ export default function Workouts() {
         </ul>
 
         {activeRoutine && (
-          <div className="mt-4 border border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
+          <div className="mt-4 surface-card p-4">
             <p className="text-sm font-medium text-neutral-800 dark:text-neutral-200 mb-3">{activeRoutine.routine.name}</p>
             <div className="space-y-2 mb-3">
               {activeRoutine.sets.map((set, i) => (
@@ -249,19 +249,19 @@ export default function Workouts() {
                     value={set.reps}
                     onChange={(e) => updateActiveSet(i, "reps", Number(e.target.value))}
                     aria-label={`Reps ${set.exercise_name}`}
-                    className="rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-2 py-1"
+                    className="input-field px-2 py-1"
                   />
                   <input
                     type="number"
                     value={set.weight_kg}
                     onChange={(e) => updateActiveSet(i, "weight_kg", Number(e.target.value))}
                     aria-label={`Kg ${set.exercise_name}`}
-                    className="rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-2 py-1"
+                    className="input-field px-2 py-1"
                   />
                 </div>
               ))}
             </div>
-            <button onClick={handleFinishRoutine} className="bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-4 py-2 rounded-md text-sm font-medium">
+            <button onClick={handleFinishRoutine} className="btn-primary">
               Terminar rutina
             </button>
           </div>
@@ -270,7 +270,7 @@ export default function Workouts() {
 
       <div>
         <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-50 mb-2">Récords personales</h2>
-        <button onClick={handleShowPersonalRecords} className="bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-4 py-2 rounded-md text-sm font-medium mb-3">
+        <button onClick={handleShowPersonalRecords} className="btn-secondary mb-3">
           Ver récords
         </button>
         {prLocked && <UpgradeWall feature="Récords personales" />}
@@ -280,7 +280,7 @@ export default function Workouts() {
               <div
                 key={pr.exercise_name}
                 data-testid={`pr-${pr.exercise_name}`}
-                className="flex items-center gap-2 bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg px-3 py-2"
+                className="surface-card-hover flex items-center gap-2 px-3 py-2"
               >
                 <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: categoryColor(pr.exercise_name) }} />
                 <span className="text-sm text-neutral-800 dark:text-neutral-200">{pr.exercise_name}</span>
@@ -299,9 +299,9 @@ export default function Workouts() {
             value={progressExercise}
             onChange={(e) => setProgressExercise(e.target.value)}
             placeholder="Nombre del ejercicio"
-            className="flex-1 rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2"
+            className="input-field flex-1"
           />
-          <button onClick={handleProgress} className="bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-4 py-2 rounded-md text-sm font-medium">
+          <button onClick={handleProgress} className="btn-secondary">
             Ver progreso
           </button>
         </div>

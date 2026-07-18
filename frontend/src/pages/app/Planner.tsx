@@ -64,10 +64,10 @@ export default function Planner() {
       <div className="flex items-center justify-between mb-1">
         <h1 className="text-xl font-semibold text-neutral-900 dark:text-neutral-50">Planificador</h1>
         <div className="flex gap-2">
-          <button onClick={() => setShowSettings(true)} className="text-xs px-3 py-1.5 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
+          <button onClick={() => setShowSettings(true)} className="btn-secondary text-xs px-3 py-1.5">
             ⚙ Horas
           </button>
-          <button onClick={() => setShowFocus(true)} className="text-xs px-3 py-1.5 rounded-md bg-accent text-white">
+          <button onClick={() => setShowFocus(true)} className="btn-accent text-xs px-3 py-1.5">
             ▶ Modo Foco
           </button>
         </div>
@@ -81,7 +81,7 @@ export default function Planner() {
               key={t.id}
               draggable
               onDragStart={() => setDragId(t.id)}
-              className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-3 cursor-grab flex items-center gap-2"
+              className="surface-card-hover p-3 cursor-grab flex items-center gap-2"
             >
               <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: categoryColor(t.category) }} />
               <span className="text-sm text-neutral-800 dark:text-neutral-200">{t.title}</span>
@@ -90,7 +90,7 @@ export default function Planner() {
           {unscheduled.length === 0 && <p className="text-neutral-400 dark:text-neutral-500 text-sm">Todo agendado.</p>}
         </div>
 
-        <div className="md:col-span-2 border border-neutral-200 dark:border-neutral-800 rounded-lg divide-y divide-neutral-100 dark:divide-neutral-800">
+        <div className="md:col-span-2 surface-card divide-y divide-neutral-100 dark:divide-neutral-800">
           {hours.map((h) => {
             const scheduled = tasks.filter((t) => {
               if (!t.scheduled_at) return false;
@@ -114,7 +114,7 @@ export default function Planner() {
                       key={t.id}
                       draggable
                       onDragStart={() => setDragId(t.id)}
-                      className="text-sm bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded px-2 py-1 text-neutral-800 dark:text-neutral-200"
+                      className="text-sm bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-md px-2 py-1 text-neutral-800 dark:text-neutral-200 hover:border-accent/40 transition-colors duration-150"
                     >
                       {t.title}
                     </div>
@@ -127,10 +127,10 @@ export default function Planner() {
       </div>
 
       {showSettings && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-40" onClick={() => setShowSettings(false)}>
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-40" onClick={() => setShowSettings(false)}>
           <div
             onClick={(e) => e.stopPropagation()}
-            className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-6 w-full max-w-sm"
+            className="surface-card shadow-xl p-6 w-full max-w-sm"
           >
             <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-50 mb-1">Horas del planner</h2>
             <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-4">Define el rango visible de la timeline.</p>
@@ -143,7 +143,7 @@ export default function Planner() {
                   max={23}
                   value={startHour}
                   onChange={(e) => setStartHour(Number(e.target.value))}
-                  className="w-full mt-1 rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-2 py-1"
+                  className="input-field w-full mt-1 px-2 py-1"
                 />
               </label>
               <label className="text-xs text-neutral-500 dark:text-neutral-400">
@@ -154,15 +154,15 @@ export default function Planner() {
                   max={24}
                   value={endHour}
                   onChange={(e) => setEndHour(Number(e.target.value))}
-                  className="w-full mt-1 rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-2 py-1"
+                  className="input-field w-full mt-1 px-2 py-1"
                 />
               </label>
             </div>
             <div className="flex justify-end gap-2">
-              <button onClick={() => setShowSettings(false)} className="text-sm px-3 py-1.5 text-neutral-500 dark:text-neutral-400">
+              <button onClick={() => setShowSettings(false)} className="btn-ghost text-sm px-3 py-1.5">
                 Cancelar
               </button>
-              <button onClick={handleSaveSettings} className="text-sm px-3 py-1.5 rounded-md bg-neutral-900 text-white dark:bg-white dark:text-neutral-900">
+              <button onClick={handleSaveSettings} className="btn-primary text-sm px-3 py-1.5">
                 Guardar
               </button>
             </div>

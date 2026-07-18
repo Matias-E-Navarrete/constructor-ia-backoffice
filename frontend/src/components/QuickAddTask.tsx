@@ -51,7 +51,7 @@ export default function QuickAddTask({
   }
 
   return (
-    <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-3 mb-4">
+    <div className="surface-card p-3 mb-4 focus-within:border-accent/40 focus-within:shadow-glow-sm">
       <input
         value={title}
         onChange={(e) => setTitle(e.target.value)}
@@ -66,7 +66,7 @@ export default function QuickAddTask({
               aria-label="Categoría"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="rounded-full border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 px-2 py-1 text-neutral-700 dark:text-neutral-300"
+              className="rounded-full border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 px-2 py-1 text-neutral-700 dark:text-neutral-300 transition-colors duration-150 hover:border-accent/40"
             >
               {CATEGORY_PRESETS.map((c) => (
                 <option key={c} value={c}>
@@ -79,27 +79,27 @@ export default function QuickAddTask({
               value={subcategory}
               onChange={(e) => setSubcategory(e.target.value)}
               placeholder="Subcategoría"
-              className="rounded-full border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 px-2 py-1 text-neutral-700 dark:text-neutral-300 w-28"
+              className="rounded-full border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 px-2 py-1 text-neutral-700 dark:text-neutral-300 w-28 transition-colors duration-150 hover:border-accent/40"
             />
             <input
               aria-label="Fecha"
               type="date"
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
-              className="rounded-full border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 px-2 py-1 text-neutral-700 dark:text-neutral-300"
+              className="rounded-full border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 px-2 py-1 text-neutral-700 dark:text-neutral-300 transition-colors duration-150 hover:border-accent/40"
             />
             <input
               aria-label="Hora"
               type="time"
               value={dueTime}
               onChange={(e) => setDueTime(e.target.value)}
-              className="rounded-full border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 px-2 py-1 text-neutral-700 dark:text-neutral-300"
+              className="rounded-full border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 px-2 py-1 text-neutral-700 dark:text-neutral-300 transition-colors duration-150 hover:border-accent/40"
             />
             <select
               aria-label="Repetición"
               value={repeatRule}
               onChange={(e) => setRepeatRule(e.target.value as tasksApi.RepeatRule)}
-              className="rounded-full border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 px-2 py-1 text-neutral-700 dark:text-neutral-300"
+              className="rounded-full border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 px-2 py-1 text-neutral-700 dark:text-neutral-300 transition-colors duration-150 hover:border-accent/40"
             >
               <option value="none">No repetir</option>
               <option value="daily">Diario</option>
@@ -110,7 +110,7 @@ export default function QuickAddTask({
               aria-label="Prioridad"
               value={priority}
               onChange={(e) => setPriority(e.target.value as tasksApi.Priority)}
-              className="rounded-full border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 px-2 py-1 text-neutral-700 dark:text-neutral-300"
+              className="rounded-full border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 px-2 py-1 text-neutral-700 dark:text-neutral-300 transition-colors duration-150 hover:border-accent/40"
             >
               <option value="low">Baja</option>
               <option value="normal">Normal</option>
@@ -125,9 +125,9 @@ export default function QuickAddTask({
               onChange={(e) => setSubtaskDraft(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && addSubtask()}
               placeholder="Agregar subtarea..."
-              className="flex-1 rounded-md border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 px-2 py-1 text-sm text-neutral-700 dark:text-neutral-300"
+              className="flex-1 rounded-md border border-neutral-300 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800 px-2 py-1 text-sm text-neutral-700 dark:text-neutral-300 transition-colors duration-150 hover:border-accent/40"
             />
-            <button onClick={addSubtask} className="text-xs px-2 py-1 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
+            <button onClick={addSubtask} className="btn-secondary text-xs px-2 py-1">
               + Subtarea
             </button>
           </div>
@@ -141,7 +141,7 @@ export default function QuickAddTask({
 
           <div className="flex justify-between items-center pt-1">
             <span className="text-xs text-neutral-400 dark:text-neutral-500">Presiona Enter para crear</span>
-            <button onClick={handleSubmit} className="bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 text-sm font-medium px-4 py-1.5 rounded-md">
+            <button onClick={handleSubmit} className="btn-primary py-1.5">
               Añadir Tarea →
             </button>
           </div>

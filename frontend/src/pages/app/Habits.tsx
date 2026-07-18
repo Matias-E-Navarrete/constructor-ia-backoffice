@@ -56,7 +56,10 @@ export default function Habits() {
     <div className="max-w-2xl">
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-xl font-semibold text-neutral-900 dark:text-neutral-50">Hábitos</h1>
-        <Link to="/app/habits/panorama" className="text-sm text-accent-strong dark:text-accent-soft font-medium">
+        <Link
+          to="/app/habits/panorama"
+          className="text-sm text-accent-strong dark:text-accent-soft font-medium hover:opacity-80 transition-opacity duration-150"
+        >
           Ver Panorama →
         </Link>
       </div>
@@ -66,29 +69,29 @@ export default function Habits() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Nuevo hábito"
-          className="flex-1 rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2"
+          className="input-field flex-1"
         />
         <input
           value={noteSlug}
           onChange={(e) => setNoteSlug(e.target.value)}
           placeholder="Vincular a nota (slug, opcional)"
-          className="flex-1 rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2"
+          className="input-field flex-1"
         />
-        <button onClick={handleCreate} className="bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-4 py-2 rounded-md text-sm font-medium">
+        <button onClick={handleCreate} className="btn-primary">
           Agregar
         </button>
       </div>
 
       <ul className="space-y-2">
         {habits.map((h) => (
-          <li key={h.id} className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
+          <li key={h.id} className="surface-card-hover p-4">
             <div className="flex items-center justify-between">
               <span className="font-medium text-neutral-800 dark:text-neutral-200">{h.name}</span>
               <div className="flex gap-2">
-                <button onClick={() => handleCheckIn(h.id)} className="text-sm bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-3 py-1 rounded-md">
+                <button onClick={() => handleCheckIn(h.id)} className="btn-primary text-sm px-3 py-1">
                   Check-in
                 </button>
-                <button onClick={() => handleShowStats(h.id)} className="text-sm bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-3 py-1 rounded-md">
+                <button onClick={() => handleShowStats(h.id)} className="btn-secondary text-sm px-3 py-1">
                   Estadísticas
                 </button>
               </div>

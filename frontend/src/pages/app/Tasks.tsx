@@ -91,15 +91,15 @@ export default function Tasks() {
     <div>
       <div className="flex items-center justify-between mb-4">
         <h1 className="text-xl font-semibold text-neutral-900 dark:text-neutral-50">Tareas</h1>
-        <div className="flex gap-1 bg-neutral-100 dark:bg-neutral-900 rounded-md p-1">
+        <div className="flex gap-1 bg-neutral-100 dark:bg-neutral-900 rounded-lg p-1">
           {(["enfoque", "eisenhower", "kanban"] as View[]).map((v) => (
             <button
               key={v}
               onClick={() => setView(v)}
-              className={`px-3 py-1 text-sm rounded ${
+              className={`px-3 py-1 text-sm rounded-md transition-all duration-150 ${
                 view === v
                   ? "bg-white dark:bg-neutral-700 text-neutral-900 dark:text-neutral-50 shadow-sm"
-                  : "text-neutral-500 dark:text-neutral-400"
+                  : "text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300"
               }`}
             >
               {v === "enfoque" ? "Enfoque" : v === "eisenhower" ? "Eisenhower" : "Kanban"}
@@ -125,11 +125,11 @@ export default function Tasks() {
               onDragStart={() => setDragId(t.id)}
               onDragOver={(e) => e.preventDefault()}
               onDrop={() => handleDropReorder(t.id)}
-              className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-3 flex items-center gap-3 cursor-grab"
+              className="surface-card-hover p-3 flex items-center gap-3 cursor-grab"
             >
               <button
                 onClick={() => handleComplete(t.id, t.status === "done")}
-                className="w-4 h-4 rounded-full border border-neutral-400 dark:border-neutral-600 flex-shrink-0"
+                className="w-4 h-4 rounded-full border border-neutral-400 dark:border-neutral-600 flex-shrink-0 transition-colors duration-150 hover:border-accent"
                 aria-label="Completar"
               />
               <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: categoryColor(t.category) }} />
@@ -155,7 +155,7 @@ export default function Tasks() {
               data-testid={`quadrant-${q.key}`}
               onDragOver={(e) => e.preventDefault()}
               onDrop={() => handleDropQuadrant(q.key)}
-              className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-3 min-h-[140px]"
+              className="surface-card p-3 min-h-[140px]"
             >
               <p className="text-xs font-medium mb-2 flex items-center gap-2 text-neutral-600 dark:text-neutral-300">
                 <span className="w-2 h-2 rounded-full" style={{ background: q.dot }} />
@@ -170,7 +170,7 @@ export default function Tasks() {
                       data-testid={`task-card-${t.id}`}
                       draggable
                       onDragStart={() => setDragId(t.id)}
-                      className="bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-md p-2 text-sm text-neutral-800 dark:text-neutral-200 cursor-grab"
+                      className="bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-md p-2 text-sm text-neutral-800 dark:text-neutral-200 cursor-grab hover:border-accent/40 transition-colors duration-150"
                     >
                       {t.title}
                     </li>
@@ -189,7 +189,7 @@ export default function Tasks() {
                     data-testid={`task-card-${t.id}`}
                     draggable
                     onDragStart={() => setDragId(t.id)}
-                    className="bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-md px-2 py-1 text-sm text-neutral-800 dark:text-neutral-200 cursor-grab"
+                    className="bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-md px-2 py-1 text-sm text-neutral-800 dark:text-neutral-200 cursor-grab hover:border-accent/40 transition-colors duration-150"
                   >
                     {t.title}
                   </li>
@@ -207,7 +207,7 @@ export default function Tasks() {
               data-testid={`column-${c.key}`}
               onDragOver={(e) => e.preventDefault()}
               onDrop={() => handleDropStatus(c.key)}
-              className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-3 min-h-[200px]"
+              className="surface-card p-3 min-h-[200px]"
             >
               <p className="text-xs font-medium mb-2 flex items-center gap-2 text-neutral-600 dark:text-neutral-300">
                 <span className="w-2 h-2 rounded-full" style={{ background: c.dot }} />
@@ -222,7 +222,7 @@ export default function Tasks() {
                       data-testid={`task-card-${t.id}`}
                       draggable
                       onDragStart={() => setDragId(t.id)}
-                      className="bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-md p-2 text-sm text-neutral-800 dark:text-neutral-200 cursor-grab"
+                      className="bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-md p-2 text-sm text-neutral-800 dark:text-neutral-200 cursor-grab hover:border-accent/40 transition-colors duration-150"
                     >
                       {t.title}
                     </li>

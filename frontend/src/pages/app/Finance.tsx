@@ -162,10 +162,10 @@ export default function Finance() {
   return (
     <div className="max-w-3xl space-y-8">
       <div>
-        <h1 className="text-xl font-semibold text-neutral-900 dark:text-neutral-50 mb-1">Wallet</h1>
-        <div className="flex flex-wrap gap-x-6 gap-y-1 mb-4">
+        <h1 className="text-xl font-semibold text-neutral-900 dark:text-neutral-50 mb-3">Wallet</h1>
+        <div className="surface-card p-5 flex flex-wrap gap-x-8 gap-y-1 mb-4">
           {[...balancesByCurrency.entries()].map(([cur, total]) => (
-            <span key={cur} className="text-2xl font-light text-neutral-900 dark:text-neutral-50">
+            <span key={cur} className="text-3xl font-light text-neutral-900 dark:text-neutral-50 tabular-nums">
               {total.toFixed(2)} <span className="text-sm text-neutral-400 dark:text-neutral-500">{cur}</span>
             </span>
           ))}
@@ -179,12 +179,12 @@ export default function Finance() {
               value={newAccountName}
               onChange={(e) => setNewAccountName(e.target.value)}
               placeholder="Nombre de la cuenta o tarjeta"
-              className="rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2 text-sm"
+              className="input-field px-3 py-2 text-sm"
             />
             <select
               value={newAccountCurrency}
               onChange={(e) => setNewAccountCurrency(e.target.value)}
-              className="rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2 text-sm"
+              className="input-field px-3 py-2 text-sm"
             >
               {CURRENCIES.map((c) => (
                 <option key={c} value={c}>
@@ -197,9 +197,9 @@ export default function Finance() {
               value={newAccountBalance || ""}
               onChange={(e) => setNewAccountBalance(Number(e.target.value))}
               placeholder="Saldo inicial"
-              className="rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2 text-sm w-32"
+              className="input-field px-3 py-2 text-sm w-32"
             />
-            <button onClick={handleCreateAccount} className="bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-3 py-2 rounded-md text-sm font-medium">
+            <button onClick={handleCreateAccount} className="btn-primary text-sm px-3 py-2">
               Agregar Cuenta →
             </button>
           </div>
@@ -213,7 +213,7 @@ export default function Finance() {
         </details>
 
         <div className="grid grid-cols-2 gap-2 mb-2">
-          <select aria-label="Tipo de movimiento" value={type} onChange={(e) => setType(e.target.value as "income" | "expense")} className="rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2">
+          <select aria-label="Tipo de movimiento" value={type} onChange={(e) => setType(e.target.value as "income" | "expense")} className="input-field px-3 py-2">
             <option value="expense">Gasto</option>
             <option value="income">Ingreso</option>
           </select>
@@ -223,13 +223,13 @@ export default function Finance() {
               value={amount || ""}
               onChange={(e) => setAmount(Number(e.target.value))}
               placeholder="Monto"
-              className="flex-1 rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2"
+              className="flex-1 input-field px-3 py-2"
             />
             <select
               aria-label="Moneda"
               value={currency}
               onChange={(e) => setCurrency(e.target.value)}
-              className="rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-2 py-2 text-sm"
+              className="input-field px-2 py-2 text-sm"
             >
               {CURRENCIES.map((c) => (
                 <option key={c} value={c}>
@@ -242,13 +242,13 @@ export default function Finance() {
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             placeholder="Categoría"
-            className="rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2"
+            className="input-field px-3 py-2"
           />
           <select
             aria-label="Cuenta"
             value={accountId}
             onChange={(e) => setAccountId(e.target.value)}
-            className="rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2"
+            className="input-field px-3 py-2"
           >
             <option value="">Sin cuenta</option>
             {accounts.map((a) => (
@@ -261,7 +261,7 @@ export default function Finance() {
             value={method}
             onChange={(e) => setMethod(e.target.value)}
             placeholder="Método (opcional)"
-            className="rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2"
+            className="input-field px-3 py-2"
           />
           <div className="flex items-center gap-2 text-sm text-neutral-600 dark:text-neutral-400">
             <label className="flex items-center gap-1">
@@ -271,7 +271,7 @@ export default function Finance() {
                 min={1}
                 value={installments}
                 onChange={(e) => setInstallments(Number(e.target.value))}
-                className="w-14 rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-2 py-1"
+                className="w-14 input-field px-2 py-1"
               />
             </label>
             <label className="flex items-center gap-1">
@@ -280,7 +280,7 @@ export default function Finance() {
             </label>
           </div>
           {familyGroups.length > 0 && (
-            <select aria-label="Compartir con grupo familiar" value={shareGroupId} onChange={(e) => setShareGroupId(e.target.value)} className="rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2">
+            <select aria-label="Compartir con grupo familiar" value={shareGroupId} onChange={(e) => setShareGroupId(e.target.value)} className="input-field px-3 py-2">
               <option value="">Personal</option>
               {familyGroups.map((m) => (
                 <option key={m.group.id} value={m.group.id}>
@@ -295,7 +295,7 @@ export default function Finance() {
             ≈ USD {conversion.converted_amount.toFixed(2)} · tasa {conversion.rate.toFixed(4)}
           </p>
         )}
-        <button onClick={handleCreate} className="bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-4 py-2 rounded-md text-sm font-medium mb-6">
+        <button onClick={handleCreate} className="btn-primary mb-6">
           Registrar
         </button>
 
@@ -304,7 +304,7 @@ export default function Finance() {
             aria-label="Vista de movimientos"
             value={viewGroupId}
             onChange={(e) => handleViewChange(e.target.value)}
-            className="mb-4 rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2 text-sm"
+            className="mb-4 input-field px-3 py-2 text-sm"
           >
             <option value="">Mis movimientos personales</option>
             {familyGroups.map((m) => (
@@ -317,7 +317,7 @@ export default function Finance() {
 
         <ul className="space-y-2">
           {transactions.map((t) => (
-            <li key={t.id} className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-3 flex justify-between text-sm text-neutral-800 dark:text-neutral-200">
+            <li key={t.id} className="surface-card-hover p-3 flex justify-between text-sm text-neutral-800 dark:text-neutral-200">
               <span>
                 {t.category}
                 {t.installments_total && t.installments_total > 1 && (
@@ -339,25 +339,25 @@ export default function Finance() {
       <div>
         <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-50 mb-2">Resumen y próximas cuentas</h2>
         <div className="flex flex-wrap gap-2 mb-4">
-          <button onClick={handleSummary} className="bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-4 py-2 rounded-md text-sm font-medium">
+          <button onClick={handleSummary} className="btn-secondary">
             Ver resumen
           </button>
-          <button onClick={handleUpcoming} className="bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-4 py-2 rounded-md text-sm font-medium">
+          <button onClick={handleUpcoming} className="btn-secondary">
             Próximas cuentas
           </button>
-          <button onClick={handleExport} className="bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-4 py-2 rounded-md text-sm font-medium">
+          <button onClick={handleExport} className="btn-secondary">
             Exportar CSV
           </button>
           <select
             value={pdfType}
             onChange={(e) => setPdfType(e.target.value)}
-            className="rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-2 py-2 text-sm"
+            className="input-field px-2 py-2 text-sm"
           >
             <option value="all">Todos</option>
             <option value="income">Solo ingresos</option>
             <option value="expense">Solo gastos</option>
           </select>
-          <button onClick={handleExportPDF} className="bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-4 py-2 rounded-md text-sm font-medium">
+          <button onClick={handleExportPDF} className="btn-secondary">
             Exportar PDF
           </button>
         </div>

@@ -52,7 +52,11 @@ export default function FocusMode({ onClose }: { onClose: () => void }) {
 
   return (
     <div data-testid="focus-mode" className="fixed inset-0 bg-white dark:bg-black z-50 flex flex-col md:flex-row">
-      <button onClick={onClose} className="absolute top-4 left-4 text-neutral-500 dark:text-neutral-400 text-xl" aria-label="Cerrar">
+      <button
+        onClick={onClose}
+        className="absolute top-4 left-4 w-8 h-8 rounded-full flex items-center justify-center text-neutral-500 dark:text-neutral-400 text-xl hover:bg-neutral-100 dark:hover:bg-neutral-900 transition-colors duration-150"
+        aria-label="Cerrar"
+      >
         ×
       </button>
 
@@ -72,16 +76,19 @@ export default function FocusMode({ onClose }: { onClose: () => void }) {
         <div className="flex gap-3 mt-6">
           <button
             onClick={() => setRunning((r) => !r)}
-            className="w-10 h-10 rounded-md bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 flex items-center justify-center"
+            className="w-11 h-11 rounded-full bg-accent text-white flex items-center justify-center shadow-glow-sm transition-transform duration-150 hover:scale-105 active:scale-95"
           >
             {running ? "❚❚" : "▶"}
           </button>
-          <button onClick={reset} className="w-10 h-10 rounded-md border border-neutral-300 dark:border-neutral-700 text-neutral-600 dark:text-neutral-300">
+          <button
+            onClick={reset}
+            className="w-11 h-11 rounded-full border border-neutral-300 dark:border-neutral-700 text-neutral-600 dark:text-neutral-300 hover:border-accent/40 transition-colors duration-150"
+          >
             ↺
           </button>
         </div>
-        <div className="w-64 h-0.5 bg-neutral-200 dark:bg-neutral-800 mt-8">
-          <div className="h-0.5 bg-accent" style={{ width: `${progress * 100}%` }} />
+        <div className="w-64 h-1 rounded-full bg-neutral-200 dark:bg-neutral-800 mt-8 overflow-hidden">
+          <div className="h-1 bg-accent rounded-full transition-[width] duration-1000 ease-linear" style={{ width: `${progress * 100}%` }} />
         </div>
       </div>
 
@@ -90,10 +97,10 @@ export default function FocusMode({ onClose }: { onClose: () => void }) {
         <p className="text-xs text-neutral-400 dark:text-neutral-500 mb-4">{tasks.length} pendientes</p>
         <ul className="space-y-2 flex-1 overflow-auto">
           {tasks.map((t) => (
-            <li key={t.id} className="flex items-center gap-2 bg-neutral-50 dark:bg-neutral-900 rounded-md p-2">
+            <li key={t.id} className="flex items-center gap-2 bg-neutral-50 dark:bg-neutral-900 rounded-lg p-2">
               <button
                 onClick={() => handleComplete(t)}
-                className="w-4 h-4 rounded-full border border-neutral-400 dark:border-neutral-600 flex-shrink-0"
+                className="w-4 h-4 rounded-full border border-neutral-400 dark:border-neutral-600 flex-shrink-0 hover:border-accent transition-colors duration-150"
                 aria-label="Completar"
               />
               <span className="text-sm text-neutral-800 dark:text-neutral-200">{t.title}</span>
@@ -106,13 +113,16 @@ export default function FocusMode({ onClose }: { onClose: () => void }) {
             onChange={(e) => setNote(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSaveNote()}
             placeholder="Nota rápida..."
-            className="flex-1 rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-2 py-1 text-sm"
+            className="input-field flex-1 px-2 py-1"
           />
-          <button onClick={handleSaveNote} className="text-sm px-2 rounded-md bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
+          <button onClick={handleSaveNote} className="btn-secondary text-sm px-2 py-1">
             ➤
           </button>
         </div>
-        <button onClick={onClose} className="mt-3 text-sm text-neutral-500 dark:text-neutral-400 border-t border-neutral-200 dark:border-neutral-800 pt-3">
+        <button
+          onClick={onClose}
+          className="mt-3 text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-300 border-t border-neutral-200 dark:border-neutral-800 pt-3 transition-colors duration-150"
+        >
           Terminar Flow
         </button>
       </div>

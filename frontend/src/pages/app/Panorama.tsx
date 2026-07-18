@@ -42,6 +42,7 @@ function StreakRing({ habit }: { habit: habitsApi.PanoramaHabit }) {
           strokeDasharray={circumference}
           strokeDashoffset={circumference * (1 - progress)}
           transform="rotate(-90 40 40)"
+          className="transition-[stroke-dashoffset] duration-700 ease-out"
         />
         <text x={40} y={44} textAnchor="middle" className="fill-neutral-900 dark:fill-neutral-50 text-lg font-semibold">
           {habit.current_streak}
@@ -75,7 +76,7 @@ function Heatmap({ habit }: { habit: habitsApi.PanoramaHabit }) {
                 onMouseEnter={() => setHovered(day)}
                 onMouseLeave={() => setHovered(null)}
                 title={`${day.date}: ${day.completed ? "Completado" : "Sin registro"}`}
-                className={`w-[10px] h-[10px] rounded-sm ${day.completed ? "bg-accent" : "bg-neutral-100 dark:bg-neutral-800"}`}
+                className={`w-[10px] h-[10px] rounded-sm transition-transform duration-100 hover:scale-125 ${day.completed ? "bg-accent" : "bg-neutral-100 dark:bg-neutral-800"}`}
               />
             ))}
           </div>
@@ -123,8 +124,8 @@ export default function Panorama() {
 
       {panorama && panorama.length > 0 && (
         <>
-          <div>
-            <h2 className="text-sm font-medium text-neutral-500 dark:text-neutral-400 mb-3">Rachas</h2>
+          <div className="surface-card p-5">
+            <h2 className="text-sm font-medium text-neutral-500 dark:text-neutral-400 mb-4">Rachas</h2>
             <div className="flex flex-wrap gap-6">
               {panorama.map((h) => (
                 <StreakRing key={h.habit_id} habit={h} />
@@ -132,15 +133,15 @@ export default function Panorama() {
             </div>
           </div>
 
-          <div>
-            <h2 className="text-sm font-medium text-neutral-500 dark:text-neutral-400 mb-3">Calendario (últimos 90 días)</h2>
+          <div className="surface-card p-5">
+            <h2 className="text-sm font-medium text-neutral-500 dark:text-neutral-400 mb-4">Calendario (últimos 90 días)</h2>
             {panorama.map((h) => (
               <Heatmap key={h.habit_id} habit={h} />
             ))}
           </div>
 
-          <div>
-            <h2 className="text-sm font-medium text-neutral-500 dark:text-neutral-400 mb-3">Consistencia semanal</h2>
+          <div className="surface-card p-5">
+            <h2 className="text-sm font-medium text-neutral-500 dark:text-neutral-400 mb-4">Consistencia semanal</h2>
             <div className="flex flex-col md:flex-row items-center gap-6">
               <svg width={RADAR_SIZE} height={RADAR_SIZE} viewBox={`0 0 ${RADAR_SIZE} ${RADAR_SIZE}`}>
                 {RADAR_LEVELS.map((level) => (
@@ -181,8 +182,8 @@ export default function Panorama() {
             </div>
           </div>
 
-          <div>
-            <h2 className="text-sm font-medium text-neutral-500 dark:text-neutral-400 mb-3">Detalle</h2>
+          <div className="surface-card p-5">
+            <h2 className="text-sm font-medium text-neutral-500 dark:text-neutral-400 mb-4">Detalle</h2>
             <table className="w-full text-sm text-left">
               <thead className="text-xs text-neutral-400 dark:text-neutral-500">
                 <tr>
