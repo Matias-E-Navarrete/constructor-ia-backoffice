@@ -9,18 +9,20 @@ type PositionedNode = notesApi.GraphNode & { x: number; y: number; vx: number; v
 const WIDTH = 640;
 const HEIGHT = 420;
 
+// Notes are the hub of the vault, so they get the one neon accent; every
+// other entity type stays a plain neutral dot to keep the graph mono-first.
 const kindColorLight: Record<string, string> = {
-  note: "#0f172a",
-  habit: "#059669",
-  workout: "#2563eb",
-  finance: "#d97706",
+  note: "#a21caf",
+  habit: "#a3a3a3",
+  workout: "#a3a3a3",
+  finance: "#a3a3a3",
 };
 
 const kindColorDark: Record<string, string> = {
-  note: "#f1f5f9",
-  habit: "#34d399",
-  workout: "#60a5fa",
-  finance: "#fbbf24",
+  note: "#e879f9",
+  habit: "#737373",
+  workout: "#737373",
+  finance: "#737373",
 };
 
 // A small hand-rolled force simulation (repulsion between all nodes, spring
@@ -118,14 +120,14 @@ export default function NotesGraph() {
   }, []);
 
   if (locked) return <UpgradeWall feature="Vista de grafo de notas" />;
-  if (!graph) return <p className="text-slate-500 dark:text-slate-400">Cargando grafo...</p>;
+  if (!graph) return <p className="text-neutral-500 dark:text-neutral-400">Cargando grafo...</p>;
 
   const byId = new Map(nodes.map((n) => [n.id, n]));
 
   return (
     <div>
-      <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-4">Grafo de notas</h1>
-      <svg width={WIDTH} height={HEIGHT} className="bg-white dark:bg-neutral-900 border border-slate-200 dark:border-neutral-800 rounded-lg">
+      <h1 className="text-xl font-semibold text-neutral-900 dark:text-neutral-50 mb-4">Grafo de notas</h1>
+      <svg width={WIDTH} height={HEIGHT} className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg">
         {graph.edges.map((e, i) => {
           const from = byId.get(e.from);
           const to = byId.get(e.to);
@@ -134,7 +136,7 @@ export default function NotesGraph() {
         })}
         {nodes.map((n) => (
           <g key={n.id}>
-            <circle cx={n.x} cy={n.y} r={8} fill={kindColor[n.kind] ?? "#64748b"} />
+            <circle cx={n.x} cy={n.y} r={8} fill={kindColor[n.kind] ?? "#737373"} />
             <text x={n.x + 12} y={n.y + 4} fontSize={11} fill={labelColor}>
               {n.title}
             </text>

@@ -20,14 +20,14 @@ import AdminTestRunner from "./pages/admin/TestRunner";
 
 function RequireAuth({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
-  if (loading) return <div className="p-8 text-slate-500 dark:text-slate-400 bg-white dark:bg-black min-h-screen">Cargando...</div>;
+  if (loading) return <div className="p-8 text-neutral-500 dark:text-neutral-400 bg-white dark:bg-black min-h-screen">Cargando...</div>;
   if (!user) return <Navigate to="/login" replace />;
   return <>{children}</>;
 }
 
 function RequireAdmin({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
-  if (loading) return <div className="p-8 text-slate-500 dark:text-slate-400 bg-white dark:bg-black min-h-screen">Cargando...</div>;
+  if (loading) return <div className="p-8 text-neutral-500 dark:text-neutral-400 bg-white dark:bg-black min-h-screen">Cargando...</div>;
   if (!user) return <Navigate to="/login" replace />;
   if (user.role !== "admin") return <Navigate to="/app/habits" replace />;
   return <>{children}</>;

@@ -31,36 +31,36 @@ export default function AdminDashboard() {
 
   return (
     <div>
-      <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-4">Roadmap</h1>
+      <h1 className="text-xl font-semibold text-neutral-900 dark:text-neutral-50 mb-4">Roadmap</h1>
 
       <div className="flex gap-2 mb-6">
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Nueva tarea/feature/bug"
-          className="flex-1 rounded-md border border-slate-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-slate-900 dark:text-slate-100 px-3 py-2"
+          className="flex-1 rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2"
         />
-        <select value={kind} onChange={(e) => setKind(e.target.value as adminApi.RoadmapItem["kind"])} className="rounded-md border border-slate-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-slate-900 dark:text-slate-100 px-3 py-2">
+        <select value={kind} onChange={(e) => setKind(e.target.value as adminApi.RoadmapItem["kind"])} className="rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2">
           <option value="task">Tarea</option>
           <option value="feature">Feature</option>
           <option value="bug">Bug</option>
         </select>
-        <button onClick={handleCreate} className="bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-4 py-2 rounded-md text-sm font-medium">
+        <button onClick={handleCreate} className="bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-4 py-2 rounded-md text-sm font-medium">
           Agregar
         </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {columns.map((status) => (
-          <div key={status} className="bg-white dark:bg-neutral-900 border border-slate-200 dark:border-neutral-800 rounded-lg p-3">
-            <h2 className="font-medium text-slate-700 dark:text-slate-300 text-sm mb-2">{columnLabel[status]}</h2>
+          <div key={status} className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-3">
+            <h2 className="font-medium text-neutral-700 dark:text-neutral-300 text-sm mb-2">{columnLabel[status]}</h2>
             <ul className="space-y-2">
               {items
                 .filter((it) => it.status === status)
                 .map((it) => (
-                  <li key={it.id} className="bg-slate-50 dark:bg-neutral-800 border border-slate-200 dark:border-neutral-700 rounded-md p-2">
-                    <p className="text-sm text-slate-800 dark:text-slate-200">{it.title}</p>
-                    <p className="text-xs text-slate-400 dark:text-slate-500 mb-1">{it.kind}</p>
+                  <li key={it.id} className="bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 rounded-md p-2">
+                    <p className="text-sm text-neutral-800 dark:text-neutral-200">{it.title}</p>
+                    <p className="text-xs text-neutral-400 dark:text-neutral-500 mb-1">{it.kind}</p>
                     <div className="flex gap-1">
                       {columns
                         .filter((s) => s !== status)
@@ -68,7 +68,7 @@ export default function AdminDashboard() {
                           <button
                             key={s}
                             onClick={() => handleMove(it.id, s)}
-                            className="text-xs bg-white dark:bg-neutral-900 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-neutral-700 px-2 py-0.5 rounded"
+                            className="text-xs bg-white dark:bg-neutral-900 text-neutral-700 dark:text-neutral-300 border border-neutral-200 dark:border-neutral-700 px-2 py-0.5 rounded"
                           >
                             → {columnLabel[s]}
                           </button>
