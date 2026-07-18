@@ -9,7 +9,7 @@ export async function registerAndLogin(page: Page, email: string, password = "pa
   await page.getByLabel("Email").fill(email);
   await page.getByLabel("Contraseña").fill(password);
   await page.getByRole("button", { name: "Crear cuenta" }).click();
-  await page.waitForURL("**/app/habits");
+  await page.waitForURL("**/app/tasks");
 }
 
 export async function login(page: Page, email: string, password = "password123") {
@@ -17,7 +17,7 @@ export async function login(page: Page, email: string, password = "password123")
   await page.getByLabel("Email").fill(email);
   await page.getByLabel("Contraseña").fill(password);
   await page.getByRole("button", { name: "Ingresar" }).click();
-  await page.waitForURL("**/app/habits");
+  await page.waitForURL("**/app/tasks");
 }
 
 // registerOrLogin is for fixed, non-unique emails (like the ADMIN_EMAILS
@@ -30,7 +30,7 @@ export async function registerOrLogin(page: Page, email: string, password = "pas
   await page.getByLabel("Contraseña").fill(password);
   await page.getByRole("button", { name: "Crear cuenta" }).click();
   try {
-    await page.waitForURL("**/app/habits", { timeout: 5_000 });
+    await page.waitForURL("**/app/tasks", { timeout: 5_000 });
   } catch {
     await login(page, email, password);
   }

@@ -17,7 +17,7 @@ export default function Register() {
     setSubmitting(true);
     try {
       await register(email, password);
-      navigate("/app/habits");
+      navigate("/app/tasks");
     } catch {
       setError("No pudimos crear tu cuenta. Probá con otro email o una contraseña más larga.");
     } finally {

@@ -15,7 +15,7 @@ test("invite a family member, share a transaction, both see it", async ({ browse
 
   await ownerPage.goto("/app/family");
   await ownerPage.getByPlaceholder("Nombre del grupo familiar").fill("Familia Test");
-  await ownerPage.getByRole("button", { name: "Crear" }).click();
+  await ownerPage.getByRole("button", { name: "Crear", exact: true }).click();
   await ownerPage.getByText("Familia Test").click();
   await ownerPage.getByPlaceholder("Email a invitar").fill(memberEmail);
   await ownerPage.getByRole("button", { name: "Invitar" }).click();

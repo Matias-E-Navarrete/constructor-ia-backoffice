@@ -10,9 +10,10 @@ import (
 )
 
 type Handler struct {
-	Register *application.RegisterUser
-	Login    *application.AuthenticateUser
-	Upgrade  *application.UpgradePlan
+	Register           *application.RegisterUser
+	Login              *application.AuthenticateUser
+	Upgrade            *application.UpgradePlan
+	UpdatePlannerHours *application.UpdatePlannerHours
 }
 
 func (h *Handler) HandleRegister(w nethttp.ResponseWriter, r *nethttp.Request) {
@@ -55,6 +56,23 @@ func (h *Handler) HandleUpgrade(w nethttp.ResponseWriter, r *nethttp.Request) {
 	updated, err := h.Upgrade.Execute(r.Context(), user.ID)
 	if err != nil {
 		httpkit.WriteError(w, nethttp.StatusInternalServerError, "internal_error", "could not upgrade plan")
+		return
+	}
+	httpkit.WriteJSON(w, nethttp.StatusOK, toUserResponse(updated))
+}
+
+func (h *Handler) HandlePlannerHours(w nethttp.ResponseWriter, r *nethttp.Request) {
+	user, _ := httpmiddleware.UserFromContext(r.Context())
+
+	var req updatePlannerHoursRequest
+	if err := httpkit.DecodeJSON(r, &req); err != nil {
+		httpkit.WriteError(w, nethttp.StatusBadRequest, "invalid_body", "malformed JSON body")
+		return
+	}
+
+	updated, err := h.UpdatePlannerHours.Execute(r.Context(), user.ID, req.StartHour, req.EndHour)
+	if err != nil {
+		httpkit.WriteError(w, nethttp.StatusBadRequest, "bad_request", err.Error())
 		return
 	}
 	httpkit.WriteJSON(w, nethttp.StatusOK, toUserResponse(updated))

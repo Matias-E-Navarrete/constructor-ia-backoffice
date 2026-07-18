@@ -72,15 +72,24 @@ export async function apiFetch<T>(path: string, options: RequestOptions = {}): P
   return payload as T;
 }
 
-// downloadFile is used by the CSV/zip export endpoints, which return raw
-// bytes rather than JSON.
-export async function downloadFile(path: string, filename: string) {
+// downloadFile is used by the CSV/PDF/zip export endpoints, which return raw
+// bytes rather than JSON. Pass `body` to issue a POST with a JSON payload
+// (e.g. PDF export filters) instead of a plain GET.
+export async function downloadFile(path: string, filename: string, body?: unknown) {
   const token = getToken();
   const headers: Record<string, string> = {};
   if (token) headers["Authorization"] = `Bearer ${token}`;
+  if (body !== undefined) headers["Content-Type"] = "application/json";
 
-  const res = await fetch(path, { headers });
-  if (!res.ok) throw new ApiError(res.status, "error", "download failed");
+  const res = await fetch(path, {
+    method: body !== undefined ? "POST" : "GET",
+    headers,
+    body: body !== undefined ? JSON.stringify(body) : undefined,
+  });
+  if (!res.ok) {
+    if (res.status === 403) throw new UpgradeRequiredError(403, "upgrade_required", "this feature requires the pro plan");
+    throw new ApiError(res.status, "error", "download failed");
+  }
 
   const blob = await res.blob();
   const url = URL.createObjectURL(blob);

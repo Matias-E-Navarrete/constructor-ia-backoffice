@@ -4,7 +4,7 @@ import { uniqueEmail, registerAndLogin, registerOrLogin } from "./helpers";
 test("non-admin is redirected out of /admin; admin kill switch disables a user-facing tab", async ({ page }) => {
   await registerAndLogin(page, uniqueEmail("nonadmin"));
   await page.goto("/admin");
-  await page.waitForURL("**/app/habits");
+  await page.waitForURL("**/app/tasks");
 
   await registerOrLogin(page, "admin@rimu.test");
   await page.goto("/admin/features");

@@ -1,8 +1,12 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import ThemeToggle from "./ThemeToggle";
+import QuickAddFab from "./QuickAddFab";
 
 const navItems = [
+  { to: "/app/tasks", label: "Tareas" },
+  { to: "/app/planner", label: "Planner" },
+  { to: "/app/inbox", label: "Bandeja" },
   { to: "/app/habits", label: "Hábitos" },
   { to: "/app/workouts", label: "Entrenamientos" },
   { to: "/app/finance", label: "Finanzas" },
@@ -84,6 +88,7 @@ export default function AppLayout() {
       <main className="flex-1 p-6 bg-white dark:bg-black">
         <Outlet />
       </main>
+      <QuickAddFab />
     </div>
   );
 }

@@ -5,6 +5,8 @@ export type User = {
   email: string;
   plan: "free" | "pro";
   role: "user" | "admin";
+  planner_start_hour: number;
+  planner_end_hour: number;
 };
 
 export function register(email: string, password: string) {
@@ -24,4 +26,11 @@ export function me() {
 
 export function upgrade() {
   return apiFetch<User>("/api/me/upgrade", { method: "POST" });
+}
+
+export function updatePlannerHours(startHour: number, endHour: number) {
+  return apiFetch<User>("/api/me/planner-hours", {
+    method: "PATCH",
+    body: { start_hour: startHour, end_hour: endHour },
+  });
 }

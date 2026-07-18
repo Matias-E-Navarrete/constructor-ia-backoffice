@@ -33,16 +33,24 @@ func NewAmount(value float64) (Amount, error) {
 func (a Amount) Value() float64 { return a.value }
 
 type Transaction struct {
-	ID          string
-	UserID      string
-	Type        TxType
-	Amount      Amount
-	Category    string
-	Description string
-	TxDate      time.Time
-	NoteSlug    *string
-	GroupID     *string
-	CreatedAt   time.Time
+	ID                 string
+	UserID             string
+	Type               TxType
+	Amount             Amount
+	Category           string
+	Description        string
+	TxDate             time.Time
+	NoteSlug           *string
+	GroupID            *string
+	AccountID          *string
+	Currency           string
+	ExchangeRate       *float64
+	Method             string
+	InstallmentsTotal  *int
+	InstallmentNumber  *int
+	Recurring          bool
+	RecurrenceInterval *string
+	CreatedAt          time.Time
 }
 
 // SignedAmount is positive for income, negative for expense — the quantity
@@ -87,6 +95,42 @@ func ComputeSummary(transactions []Transaction) Summary {
 		s.ByCategory = append(s.ByCategory, CategoryBreakdown{Category: category, Total: total})
 	}
 	return s
+}
+
+// UpcomingBill is a recurring transaction projected forward to its next
+// occurrence date, for the "próximas cuentas" view.
+type UpcomingBill struct {
+	Transaction Transaction
+	NextDate    time.Time
+}
+
+// ProjectUpcoming advances every recurring transaction by its interval
+// until the projected date falls within [from, to], for calendar-style
+// "upcoming bills" views. A pure function, mirroring ComputeSummary.
+func ProjectUpcoming(transactions []Transaction, from, to time.Time) []UpcomingBill {
+	var bills []UpcomingBill
+	for _, t := range transactions {
+		if !t.Recurring || t.RecurrenceInterval == nil {
+			continue
+		}
+		next := t.TxDate
+		for i := 0; i < 240 && next.Before(from); i++ { // cap iterations, ~20 years monthly
+			next = advance(next, *t.RecurrenceInterval)
+		}
+		if !next.After(to) && !next.Before(from) {
+			bills = append(bills, UpcomingBill{Transaction: t, NextDate: next})
+		}
+	}
+	return bills
+}
+
+func advance(t time.Time, interval string) time.Time {
+	switch interval {
+	case "weekly":
+		return t.AddDate(0, 0, 7)
+	default: // monthly
+		return t.AddDate(0, 1, 0)
+	}
 }
 
 type Repository interface {

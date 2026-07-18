@@ -5,21 +5,29 @@ import (
 	"errors"
 	"time"
 
-	groupsdomain "rimu/backend/internal/groups/domain"
 	"rimu/backend/internal/finance/domain"
+	groupsdomain "rimu/backend/internal/groups/domain"
 )
 
 var ErrNotGroupMember = errors.New("finance: you are not a member of that group")
 
 type RecordTransactionInput struct {
-	UserID      string
-	Type        domain.TxType
-	AmountValue float64
-	Category    string
-	Description string
-	TxDate      time.Time
-	NoteSlug    *string
-	GroupID     *string
+	UserID             string
+	Type               domain.TxType
+	AmountValue        float64
+	Category           string
+	Description        string
+	TxDate             time.Time
+	NoteSlug           *string
+	GroupID            *string
+	AccountID          *string
+	Currency           string
+	ExchangeRate       *float64
+	Method             string
+	InstallmentsTotal  *int
+	InstallmentNumber  *int
+	Recurring          bool
+	RecurrenceInterval *string
 }
 
 type RecordTransaction struct {
@@ -44,14 +52,22 @@ func (uc *RecordTransaction) Execute(ctx context.Context, in RecordTransactionIn
 	}
 
 	t := &domain.Transaction{
-		UserID:      in.UserID,
-		Type:        in.Type,
-		Amount:      amount,
-		Category:    in.Category,
-		Description: in.Description,
-		TxDate:      in.TxDate,
-		NoteSlug:    in.NoteSlug,
-		GroupID:     in.GroupID,
+		UserID:             in.UserID,
+		Type:               in.Type,
+		Amount:             amount,
+		Category:           in.Category,
+		Description:        in.Description,
+		TxDate:             in.TxDate,
+		NoteSlug:           in.NoteSlug,
+		GroupID:            in.GroupID,
+		AccountID:          in.AccountID,
+		Currency:           in.Currency,
+		ExchangeRate:       in.ExchangeRate,
+		Method:             in.Method,
+		InstallmentsTotal:  in.InstallmentsTotal,
+		InstallmentNumber:  in.InstallmentNumber,
+		Recurring:          in.Recurring,
+		RecurrenceInterval: in.RecurrenceInterval,
 	}
 	if err := uc.Repo.Create(ctx, t); err != nil {
 		return nil, err

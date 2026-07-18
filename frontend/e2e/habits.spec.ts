@@ -3,6 +3,7 @@ import { uniqueEmail, registerAndLogin, upgradeToPro } from "./helpers";
 
 test("create habit, check in, stats locked then unlocked", async ({ page }) => {
   await registerAndLogin(page, uniqueEmail("habits"));
+  await page.goto("/app/habits");
 
   await page.getByPlaceholder("Nuevo hábito").fill("Meditar");
   await page.getByRole("button", { name: "Agregar" }).click();

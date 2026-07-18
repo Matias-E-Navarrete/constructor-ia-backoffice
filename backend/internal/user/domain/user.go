@@ -24,12 +24,14 @@ var ErrEmailTaken = errors.New("user: email already registered")
 var ErrNotFound = errors.New("user: not found")
 
 type User struct {
-	ID           string
-	Email        string
-	PasswordHash string
-	Plan         Plan
-	Role         Role
-	CreatedAt    time.Time
+	ID               string
+	Email            string
+	PasswordHash     string
+	Plan             Plan
+	Role             Role
+	PlannerStartHour int
+	PlannerEndHour   int
+	CreatedAt        time.Time
 }
 
 func (u *User) IsPro() bool {
@@ -54,4 +56,5 @@ type Repository interface {
 	List(ctx context.Context) ([]*User, error)
 	UpdatePlan(ctx context.Context, id string, plan Plan) (*User, error)
 	UpdateRole(ctx context.Context, id string, role Role) (*User, error)
+	UpdatePlannerHours(ctx context.Context, id string, startHour, endHour int) (*User, error)
 }

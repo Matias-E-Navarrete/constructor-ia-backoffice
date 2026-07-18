@@ -20,13 +20,13 @@ test("upgrade, create coaching group, invite client, view their habits read-only
 
   await coachPage.goto("/app/coaching");
   await coachPage.getByPlaceholder("Nombre del grupo de coaching").fill("Mi coaching");
-  await coachPage.getByRole("button", { name: "Crear" }).click();
+  await coachPage.getByRole("button", { name: "Crear", exact: true }).click();
   await expect(coachPage.getByText("es una función Pro")).toBeVisible();
 
   await upgradeToPro(coachPage);
   await coachPage.goto("/app/coaching");
   await coachPage.getByPlaceholder("Nombre del grupo de coaching").fill("Mi coaching");
-  await coachPage.getByRole("button", { name: "Crear" }).click();
+  await coachPage.getByRole("button", { name: "Crear", exact: true }).click();
   await expect(coachPage.getByText("Mi coaching")).toBeVisible();
 
   await coachPage.getByText("Mi coaching").click();

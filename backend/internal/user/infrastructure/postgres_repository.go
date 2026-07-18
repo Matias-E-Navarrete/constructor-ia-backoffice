@@ -19,12 +19,14 @@ func NewPostgresRepository(pool *pgxpool.Pool) *PostgresRepository {
 	return &PostgresRepository{pool: pool}
 }
 
+const userColumns = `id, email, password_hash, plan, role, planner_start_hour, planner_end_hour, created_at`
+
 func (r *PostgresRepository) Create(ctx context.Context, u *domain.User) error {
 	err := r.pool.QueryRow(ctx, `
 		INSERT INTO users (email, password_hash, plan, role)
 		VALUES ($1, $2, $3, $4)
-		RETURNING id, created_at
-	`, u.Email, u.PasswordHash, u.Plan, u.Role).Scan(&u.ID, &u.CreatedAt)
+		RETURNING id, planner_start_hour, planner_end_hour, created_at
+	`, u.Email, u.PasswordHash, u.Plan, u.Role).Scan(&u.ID, &u.PlannerStartHour, &u.PlannerEndHour, &u.CreatedAt)
 
 	var pgErr *pgconn.PgError
 	if errors.As(err, &pgErr) && pgErr.Code == "23505" {
@@ -34,21 +36,15 @@ func (r *PostgresRepository) Create(ctx context.Context, u *domain.User) error {
 }
 
 func (r *PostgresRepository) FindByEmail(ctx context.Context, email string) (*domain.User, error) {
-	return r.scanOne(r.pool.QueryRow(ctx, `
-		SELECT id, email, password_hash, plan, role, created_at FROM users WHERE email = $1
-	`, email))
+	return r.scanOne(r.pool.QueryRow(ctx, `SELECT `+userColumns+` FROM users WHERE email = $1`, email))
 }
 
 func (r *PostgresRepository) FindByID(ctx context.Context, id string) (*domain.User, error) {
-	return r.scanOne(r.pool.QueryRow(ctx, `
-		SELECT id, email, password_hash, plan, role, created_at FROM users WHERE id = $1
-	`, id))
+	return r.scanOne(r.pool.QueryRow(ctx, `SELECT `+userColumns+` FROM users WHERE id = $1`, id))
 }
 
 func (r *PostgresRepository) List(ctx context.Context) ([]*domain.User, error) {
-	rows, err := r.pool.Query(ctx, `
-		SELECT id, email, password_hash, plan, role, created_at FROM users ORDER BY created_at
-	`)
+	rows, err := r.pool.Query(ctx, `SELECT `+userColumns+` FROM users ORDER BY created_at`)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +53,7 @@ func (r *PostgresRepository) List(ctx context.Context) ([]*domain.User, error) {
 	var users []*domain.User
 	for rows.Next() {
 		u := &domain.User{}
-		if err := rows.Scan(&u.ID, &u.Email, &u.PasswordHash, &u.Plan, &u.Role, &u.CreatedAt); err != nil {
+		if err := rows.Scan(&u.ID, &u.Email, &u.PasswordHash, &u.Plan, &u.Role, &u.PlannerStartHour, &u.PlannerEndHour, &u.CreatedAt); err != nil {
 			return nil, err
 		}
 		users = append(users, u)
@@ -68,20 +64,24 @@ func (r *PostgresRepository) List(ctx context.Context) ([]*domain.User, error) {
 func (r *PostgresRepository) UpdatePlan(ctx context.Context, id string, plan domain.Plan) (*domain.User, error) {
 	return r.scanOne(r.pool.QueryRow(ctx, `
 		UPDATE users SET plan = $2 WHERE id = $1
-		RETURNING id, email, password_hash, plan, role, created_at
-	`, id, plan))
+		RETURNING `+userColumns, id, plan))
 }
 
 func (r *PostgresRepository) UpdateRole(ctx context.Context, id string, role domain.Role) (*domain.User, error) {
 	return r.scanOne(r.pool.QueryRow(ctx, `
 		UPDATE users SET role = $2 WHERE id = $1
-		RETURNING id, email, password_hash, plan, role, created_at
-	`, id, role))
+		RETURNING `+userColumns, id, role))
+}
+
+func (r *PostgresRepository) UpdatePlannerHours(ctx context.Context, id string, startHour, endHour int) (*domain.User, error) {
+	return r.scanOne(r.pool.QueryRow(ctx, `
+		UPDATE users SET planner_start_hour = $2, planner_end_hour = $3 WHERE id = $1
+		RETURNING `+userColumns, id, startHour, endHour))
 }
 
 func (r *PostgresRepository) scanOne(row pgx.Row) (*domain.User, error) {
 	u := &domain.User{}
-	err := row.Scan(&u.ID, &u.Email, &u.PasswordHash, &u.Plan, &u.Role, &u.CreatedAt)
+	err := row.Scan(&u.ID, &u.Email, &u.PasswordHash, &u.Plan, &u.Role, &u.PlannerStartHour, &u.PlannerEndHour, &u.CreatedAt)
 	if errors.Is(err, pgx.ErrNoRows) {
 		return nil, domain.ErrNotFound
 	}

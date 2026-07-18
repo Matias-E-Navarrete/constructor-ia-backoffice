@@ -41,6 +41,14 @@ import (
 	adminapplication "rimu/backend/internal/admin/application"
 	admininfrastructure "rimu/backend/internal/admin/infrastructure"
 	adminhttp "rimu/backend/internal/admin/interfaces/http"
+
+	tasksapplication "rimu/backend/internal/tasks/application"
+	tasksinfrastructure "rimu/backend/internal/tasks/infrastructure"
+	taskshttp "rimu/backend/internal/tasks/interfaces/http"
+
+	inboxapplication "rimu/backend/internal/inbox/application"
+	inboxinfrastructure "rimu/backend/internal/inbox/infrastructure"
+	inboxhttp "rimu/backend/internal/inbox/interfaces/http"
 )
 
 // Build is the composition root logic shared by cmd/api/main.go and the
@@ -71,11 +79,15 @@ func Build(ctx context.Context, cfg config.Config) (*chi.Mux, *pgxpool.Pool, err
 	financeRepo := financeinfrastructure.NewPostgresRepository(pool)
 	notesRepo := notesinfrastructure.NewPostgresRepository(pool)
 	roadmapRepo := admininfrastructure.NewPostgresRoadmapRepository(pool)
+	tasksRepo := tasksinfrastructure.NewPostgresRepository(pool)
+	inboxRepo := inboxinfrastructure.NewPostgresRepository(pool)
+	accountsRepo := financeinfrastructure.NewPostgresAccountRepository(pool)
 
 	userHandler := &userhttp.Handler{
-		Register: &userapplication.RegisterUser{Repo: userRepo, IsAdminEmail: cfg.IsAdminEmail},
-		Login:    &userapplication.AuthenticateUser{Repo: userRepo, JWTSecret: cfg.JWTSecret},
-		Upgrade:  &userapplication.UpgradePlan{Repo: userRepo},
+		Register:           &userapplication.RegisterUser{Repo: userRepo, IsAdminEmail: cfg.IsAdminEmail},
+		Login:              &userapplication.AuthenticateUser{Repo: userRepo, JWTSecret: cfg.JWTSecret},
+		Upgrade:            &userapplication.UpgradePlan{Repo: userRepo},
+		UpdatePlannerHours: &userapplication.UpdatePlannerHours{Repo: userRepo},
 	}
 
 	groupsHandler := &groupshttp.Handler{
@@ -105,11 +117,16 @@ func Build(ctx context.Context, cfg config.Config) (*chi.Mux, *pgxpool.Pool, err
 	}
 
 	financeHandler := &financehttp.Handler{
-		Record:     &financeapplication.RecordTransaction{Repo: financeRepo, Groups: groupsRepo},
-		List:       &financeapplication.ListTransactions{Repo: financeRepo, Groups: groupsRepo},
-		Delete:     &financeapplication.DeleteTransaction{Repo: financeRepo},
-		GetSummary: &financeapplication.GetFinanceSummary{Repo: financeRepo},
-		ExportCSV:  &financeapplication.ExportTransactions{Repo: financeRepo},
+		Record:        &financeapplication.RecordTransaction{Repo: financeRepo, Groups: groupsRepo},
+		List:          &financeapplication.ListTransactions{Repo: financeRepo, Groups: groupsRepo},
+		Delete:        &financeapplication.DeleteTransaction{Repo: financeRepo},
+		GetSummary:    &financeapplication.GetFinanceSummary{Repo: financeRepo},
+		ExportCSV:     &financeapplication.ExportTransactions{Repo: financeRepo},
+		CreateAccount: &financeapplication.CreateAccount{Repo: accountsRepo},
+		ListAccounts:  &financeapplication.ListAccounts{Repo: accountsRepo},
+		Convert:       &financeapplication.ConvertCurrency{},
+		GetUpcoming:   &financeapplication.GetUpcomingBills{Repo: financeRepo},
+		ExportPDF:     &financeapplication.ExportPDF{Repo: financeRepo},
 	}
 
 	notesHandler := &noteshttp.Handler{
@@ -124,6 +141,26 @@ func Build(ctx context.Context, cfg config.Config) (*chi.Mux, *pgxpool.Pool, err
 		ExportVault: &notesapplication.ExportVault{
 			Notes: notesRepo, Habits: habitsRepo, Workouts: workoutsRepo, Finance: financeRepo,
 		},
+	}
+
+	tasksHandler := &taskshttp.Handler{
+		Create:      &tasksapplication.CreateTask{Repo: tasksRepo},
+		Update:      &tasksapplication.UpdateTask{Repo: tasksRepo},
+		Delete:      &tasksapplication.DeleteTask{Repo: tasksRepo},
+		List:        &tasksapplication.ListTasks{Repo: tasksRepo},
+		Complete:    &tasksapplication.CompleteTask{Repo: tasksRepo},
+		Uncomplete:  &tasksapplication.UncompleteTask{Repo: tasksRepo},
+		SetStatus:   &tasksapplication.SetStatus{Repo: tasksRepo},
+		SetQuadrant: &tasksapplication.SetQuadrant{Repo: tasksRepo},
+		Reorder:     &tasksapplication.ReorderTasks{Repo: tasksRepo},
+		Schedule:    &tasksapplication.ScheduleTask{Repo: tasksRepo},
+	}
+
+	inboxHandler := &inboxhttp.Handler{
+		Capture:   &inboxapplication.CaptureItem{Repo: inboxRepo},
+		List:      &inboxapplication.ListInbox{Repo: inboxRepo},
+		SetPinned: &inboxapplication.SetPinned{Repo: inboxRepo},
+		Delete:    &inboxapplication.DeleteItem{Repo: inboxRepo},
 	}
 
 	adminHandler := &adminhttp.Handler{
@@ -180,6 +217,9 @@ func Build(ctx context.Context, cfg config.Config) (*chi.Mux, *pgxpool.Pool, err
 			RequireExportFlag: feature("notes.export"),
 			RequirePro:        requirePro,
 		})
+
+		taskshttp.Mount(api, tasksHandler, requireAuth, feature("tasks"))
+		inboxhttp.Mount(api, inboxHandler, requireAuth, feature("inbox"))
 
 		adminhttp.Mount(api, adminHandler, requireAuth, requireAdmin)
 	})

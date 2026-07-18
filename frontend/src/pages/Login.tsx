@@ -17,7 +17,7 @@ export default function Login() {
     setSubmitting(true);
     try {
       await login(email, password);
-      navigate("/app/habits");
+      navigate("/app/tasks");
     } catch {
       setError("Email o contraseña incorrectos");
     } finally {

@@ -15,5 +15,6 @@ func Mount(r chi.Router, h *Handler, requireAuth func(nethttp.Handler) nethttp.H
 		r.Use(requireAuth)
 		r.Get("/me", h.HandleMe)
 		r.Post("/me/upgrade", h.HandleUpgrade)
+		r.Patch("/me/planner-hours", h.HandlePlannerHours)
 	})
 }

@@ -5,6 +5,9 @@ import AppLayout from "./components/AppLayout";
 import AdminLayout from "./components/AdminLayout";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Tasks from "./pages/app/Tasks";
+import Inbox from "./pages/app/Inbox";
+import Planner from "./pages/app/Planner";
 import Habits from "./pages/app/Habits";
 import Workouts from "./pages/app/Workouts";
 import Finance from "./pages/app/Finance";
@@ -29,14 +32,14 @@ function RequireAdmin({ children }: { children: ReactNode }) {
   const { user, loading } = useAuth();
   if (loading) return <div className="p-8 text-neutral-500 dark:text-neutral-400 bg-white dark:bg-black min-h-screen">Cargando...</div>;
   if (!user) return <Navigate to="/login" replace />;
-  if (user.role !== "admin") return <Navigate to="/app/habits" replace />;
+  if (user.role !== "admin") return <Navigate to="/app/tasks" replace />;
   return <>{children}</>;
 }
 
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/app/habits" replace />} />
+      <Route path="/" element={<Navigate to="/app/tasks" replace />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
@@ -48,6 +51,9 @@ export default function App() {
           </RequireAuth>
         }
       >
+        <Route path="tasks" element={<Tasks />} />
+        <Route path="inbox" element={<Inbox />} />
+        <Route path="planner" element={<Planner />} />
         <Route path="habits" element={<Habits />} />
         <Route path="workouts" element={<Workouts />} />
         <Route path="finance" element={<Finance />} />
