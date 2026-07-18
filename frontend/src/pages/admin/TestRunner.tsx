@@ -22,14 +22,14 @@ export default function AdminTestRunner() {
         <button
           onClick={() => handleRun("backend")}
           disabled={running !== null}
-          className="bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-4 py-2 rounded-md text-sm font-medium disabled:opacity-50"
+          className="btn-primary"
         >
           {running === "backend" ? "Corriendo..." : "Correr tests backend"}
         </button>
         <button
           onClick={() => handleRun("frontend")}
           disabled={running !== null}
-          className="bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-4 py-2 rounded-md text-sm font-medium disabled:opacity-50"
+          className="btn-primary"
         >
           {running === "frontend" ? "Corriendo..." : "Correr tests frontend"}
         </button>
@@ -37,9 +37,7 @@ export default function AdminTestRunner() {
 
       {result && (
         <div
-          className={`border rounded-lg p-4 bg-white dark:bg-neutral-900 border-neutral-200 dark:border-neutral-800 ${
-            result.success ? "" : "border-l-4 border-l-red-500 dark:border-l-red-500"
-          }`}
+          className={`surface-card p-4 ${result.success ? "" : "border-l-4 border-l-red-500 dark:border-l-red-500"}`}
         >
           <p className="font-medium mb-2 text-neutral-900 dark:text-neutral-100">{result.success ? "✅ Todo verde" : "❌ Hay fallas"}</p>
           {(result.passed > 0 || result.failed > 0) && (
@@ -47,7 +45,7 @@ export default function AdminTestRunner() {
               {result.passed} pasaron, {result.failed} fallaron
             </p>
           )}
-          <pre className="text-xs bg-white/60 dark:bg-black/40 text-neutral-800 dark:text-neutral-200 p-3 rounded max-h-80 overflow-auto whitespace-pre-wrap">{result.output}</pre>
+          <pre className="text-xs bg-white/60 dark:bg-black/40 text-neutral-800 dark:text-neutral-200 p-3 rounded-md max-h-80 overflow-auto whitespace-pre-wrap">{result.output}</pre>
         </div>
       )}
     </div>

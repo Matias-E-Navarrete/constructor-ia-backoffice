@@ -30,7 +30,10 @@ export default function Login() {
       <div className="absolute top-4 right-4 w-40">
         <ThemeToggle />
       </div>
-      <form onSubmit={handleSubmit} className="w-full max-w-sm bg-white dark:bg-neutral-900 p-8 rounded-xl shadow-sm border border-neutral-200 dark:border-neutral-800">
+      <form onSubmit={handleSubmit} className="w-full max-w-sm surface-card p-8">
+        <div className="w-10 h-10 rounded-lg bg-neutral-900 dark:bg-white flex items-center justify-center shadow-glow-sm mb-5">
+          <span className="text-white dark:text-neutral-900 font-bold text-base">r</span>
+        </div>
         <h1 className="text-2xl font-semibold mb-6 text-neutral-900 dark:text-neutral-50">Iniciar sesión</h1>
         {error && <p className="mb-4 text-sm text-red-600 dark:text-red-400">{error}</p>}
         <label htmlFor="email" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">Email</label>
@@ -40,7 +43,7 @@ export default function Login() {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="w-full mb-4 rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2"
+          className="input-field w-full mb-4"
         />
         <label htmlFor="password" className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1">Contraseña</label>
         <input
@@ -49,17 +52,20 @@ export default function Login() {
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full mb-6 rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2"
+          className="input-field w-full mb-6"
         />
         <button
           type="submit"
           disabled={submitting}
-          className="w-full bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 rounded-md py-2 font-medium disabled:opacity-50"
+          className="btn-primary w-full py-2"
         >
           {submitting ? "Ingresando..." : "Ingresar"}
         </button>
         <p className="mt-4 text-sm text-neutral-600 dark:text-neutral-400 text-center">
-          ¿No tenés cuenta? <Link to="/register" className="text-neutral-900 dark:text-neutral-100 font-medium">Registrate</Link>
+          ¿No tenés cuenta?{" "}
+          <Link to="/register" className="text-neutral-900 dark:text-neutral-100 font-medium hover:opacity-80 transition-opacity duration-150">
+            Registrate
+          </Link>
         </p>
       </form>
     </div>

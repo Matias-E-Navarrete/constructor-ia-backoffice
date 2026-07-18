@@ -153,6 +153,54 @@ export function IconMoon(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function IconRoadmap(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base(props)}>
+      <path d="M4 5h11l3 3-3 3H4z" />
+      <path d="M4 5v15" />
+    </svg>
+  );
+}
+
+export function IconFlag(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base(props)}>
+      <rect x="4" y="3.5" width="6" height="6" rx="1.2" />
+      <rect x="14" y="3.5" width="6" height="6" rx="1.2" />
+      <rect x="4" y="14.5" width="6" height="6" rx="1.2" />
+      <rect x="14" y="14.5" width="6" height="6" rx="1.2" />
+    </svg>
+  );
+}
+
+export function IconUsersGear(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base(props)}>
+      <circle cx="9" cy="8" r="3.2" />
+      <path d="M3.5 20c0-3.6 2.5-6 5.5-6s5.5 2.4 5.5 6" />
+      <circle cx="18" cy="17" r="1.6" />
+      <path d="M18 14v-.8M18 20.8V20M20.6 15.4l-.7.4M15.4 18.6l-.7.4M20.6 18.6l-.7-.4M15.4 15.4l-.7.4" />
+    </svg>
+  );
+}
+
+export function IconTests(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base(props)}>
+      <path d="M9 3.5h6M10 3.5v5.3L5.5 17a2 2 0 0 0 1.8 2.9h9.4A2 2 0 0 0 18.5 17L14 8.8V3.5" />
+      <path d="M7.5 15h9" />
+    </svg>
+  );
+}
+
+export function IconArrowLeft(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base(props)}>
+      <path d="M19 12H5M11 6l-6 6 6 6" />
+    </svg>
+  );
+}
+
 export function IconLogout(props: SVGProps<SVGSVGElement>) {
   return (
     <svg {...base(props)}>

@@ -22,17 +22,17 @@ export default function AdminFeatures() {
       <h1 className="text-xl font-semibold text-neutral-900 dark:text-neutral-50 mb-4">Feature flags</h1>
       <ul className="space-y-2">
         {flags.map((f) => (
-          <li key={f.key} className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-3 flex items-center justify-between">
+          <li key={f.key} className="surface-card-hover p-3 flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-neutral-800 dark:text-neutral-200">{f.key}</p>
               <p className="text-xs text-neutral-500 dark:text-neutral-400">{f.description}</p>
             </div>
             <button
               onClick={() => handleToggle(f.key, !f.enabled)}
-              className={`text-xs font-medium px-3 py-1 rounded-full border ${
+              className={`text-xs font-medium px-3 py-1 rounded-full border transition-all duration-150 ${
                 f.enabled
                   ? "bg-neutral-900 text-white border-neutral-900 dark:bg-white dark:text-neutral-900 dark:border-white"
-                  : "text-neutral-400 dark:text-neutral-500 border-neutral-300 dark:border-neutral-700"
+                  : "text-neutral-400 dark:text-neutral-500 border-neutral-300 dark:border-neutral-700 hover:border-neutral-400 dark:hover:border-neutral-600"
               }`}
             >
               {f.enabled ? "Activo" : "Apagado"}

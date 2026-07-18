@@ -62,9 +62,9 @@ export default function Coaching() {
           value={groupName}
           onChange={(e) => setGroupName(e.target.value)}
           placeholder="Nombre del grupo de coaching"
-          className="flex-1 rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2"
+          className="input-field flex-1"
         />
-        <button onClick={handleCreate} className="bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-4 py-2 rounded-md text-sm font-medium">
+        <button onClick={handleCreate} className="btn-primary">
           Crear
         </button>
       </div>
@@ -72,8 +72,8 @@ export default function Coaching() {
 
       <ul className="space-y-2">
         {memberships.map((m) => (
-          <li key={m.group.id} className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-4">
-            <button onClick={() => openGroup(m.group.id)} className="font-medium text-neutral-800 dark:text-neutral-200">
+          <li key={m.group.id} className="surface-card-hover p-4">
+            <button onClick={() => openGroup(m.group.id)} className="font-medium text-neutral-800 dark:text-neutral-200 hover:text-accent-strong dark:hover:text-accent-soft transition-colors duration-150">
               {m.group.name}
             </button>
             <span className="ml-2 text-xs text-neutral-400 dark:text-neutral-500">({m.role})</span>
@@ -83,7 +83,7 @@ export default function Coaching() {
       </ul>
 
       {selectedGroup && (
-        <div className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-4 space-y-4">
+        <div className="surface-card p-4 space-y-4">
           <h2 className="font-medium text-neutral-800 dark:text-neutral-200">{selectedGroup.group.name}</h2>
 
           <div className="flex gap-2">
@@ -91,9 +91,9 @@ export default function Coaching() {
               value={inviteEmail}
               onChange={(e) => setInviteEmail(e.target.value)}
               placeholder="Email del cliente"
-              className="flex-1 rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2"
+              className="input-field flex-1"
             />
-            <button onClick={handleInvite} className="bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-4 py-2 rounded-md text-sm font-medium">
+            <button onClick={handleInvite} className="btn-secondary">
               Invitar
             </button>
           </div>
@@ -104,7 +104,7 @@ export default function Coaching() {
               .map((m) => (
                 <li key={m.user_id} className="flex items-center justify-between">
                   <span>{m.user_id}</span>
-                  <button onClick={() => viewClient(m.user_id)} className="text-xs bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-2 py-1 rounded-md">
+                  <button onClick={() => viewClient(m.user_id)} className="btn-secondary text-xs px-2 py-1">
                     Ver progreso
                   </button>
                 </li>

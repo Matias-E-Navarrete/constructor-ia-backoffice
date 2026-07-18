@@ -127,7 +127,7 @@ export default function NotesGraph() {
   return (
     <div>
       <h1 className="text-xl font-semibold text-neutral-900 dark:text-neutral-50 mb-4">Grafo de notas</h1>
-      <svg width={WIDTH} height={HEIGHT} className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg">
+      <svg width={WIDTH} height={HEIGHT} className="surface-card">
         {graph.edges.map((e, i) => {
           const from = byId.get(e.from);
           const to = byId.get(e.to);

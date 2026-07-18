@@ -59,9 +59,9 @@ export default function Inbox() {
           onChange={(e) => setContent(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleCapture()}
           placeholder="Escribí lo que se te ocurra..."
-          className="flex-1 rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2"
+          className="input-field flex-1"
         />
-        <button onClick={handleCapture} className="bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-4 py-2 rounded-md text-sm font-medium">
+        <button onClick={handleCapture} className="btn-primary">
           Guardar
         </button>
       </div>
@@ -70,27 +70,27 @@ export default function Inbox() {
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         placeholder="Buscar por contenido..."
-        className="w-full mb-4 rounded-md border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2 text-sm"
+        className="input-field w-full mb-4 text-sm"
       />
 
       <ul className="space-y-2">
         {filtered.map((item) => (
           <li
             key={item.id}
-            className="bg-white dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-lg p-3 flex items-center justify-between text-sm text-neutral-800 dark:text-neutral-200"
+            className="surface-card-hover p-3 flex items-center justify-between text-sm text-neutral-800 dark:text-neutral-200"
           >
             <span>
               {item.pinned && <span className="mr-1">📌</span>}
               {item.content}
             </span>
             <div className="flex gap-1 text-xs">
-              <button onClick={() => handleTogglePin(item)} className="px-2 py-1 rounded bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
+              <button onClick={() => handleTogglePin(item)} className="btn-secondary px-2 py-1 text-xs">
                 {item.pinned ? "Despinnear" : "Pin"}
               </button>
-              <button onClick={() => handleOrganize(item)} className="px-2 py-1 rounded bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-300">
+              <button onClick={() => handleOrganize(item)} className="btn-secondary px-2 py-1 text-xs">
                 Organizar
               </button>
-              <button onClick={() => handleDelete(item.id)} className="px-2 py-1 rounded bg-neutral-100 dark:bg-neutral-800 text-red-500 dark:text-red-400">
+              <button onClick={() => handleDelete(item.id)} className="px-2 py-1 rounded-lg bg-neutral-100 dark:bg-neutral-800 text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 transition-colors duration-150">
                 Eliminar
               </button>
             </div>
