@@ -52,38 +52,38 @@ export default function Workouts() {
   return (
     <div className="max-w-2xl space-y-8">
       <div>
-        <h1 className="text-xl font-semibold text-slate-900 mb-4">Entrenamientos</h1>
+        <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-4">Entrenamientos</h1>
         <div className="grid grid-cols-3 gap-2 mb-6">
           <input
             value={exercise}
             onChange={(e) => setExercise(e.target.value)}
             placeholder="Ejercicio"
-            className="rounded-md border border-slate-300 px-3 py-2 col-span-1"
+            className="rounded-md border border-slate-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-slate-900 dark:text-slate-100 px-3 py-2 col-span-1"
           />
           <input
             type="number"
             value={reps}
             onChange={(e) => setReps(Number(e.target.value))}
             placeholder="Reps"
-            className="rounded-md border border-slate-300 px-3 py-2"
+            className="rounded-md border border-slate-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-slate-900 dark:text-slate-100 px-3 py-2"
           />
           <input
             type="number"
             value={weight}
             onChange={(e) => setWeight(Number(e.target.value))}
             placeholder="Kg"
-            className="rounded-md border border-slate-300 px-3 py-2"
+            className="rounded-md border border-slate-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-slate-900 dark:text-slate-100 px-3 py-2"
           />
         </div>
-        <button onClick={handleLog} className="bg-slate-900 text-white px-4 py-2 rounded-md text-sm font-medium mb-6">
+        <button onClick={handleLog} className="bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-4 py-2 rounded-md text-sm font-medium mb-6">
           Registrar sesión
         </button>
 
         <ul className="space-y-2">
           {sessions.map((s) => (
-            <li key={s.id} className="bg-white border border-slate-200 rounded-lg p-4">
-              <p className="font-medium text-slate-800">{s.session_date}</p>
-              <ul className="text-sm text-slate-600">
+            <li key={s.id} className="bg-white dark:bg-neutral-900 border border-slate-200 dark:border-neutral-800 rounded-lg p-4">
+              <p className="font-medium text-slate-800 dark:text-slate-200">{s.session_date}</p>
+              <ul className="text-sm text-slate-600 dark:text-slate-400">
                 {s.sets.map((set, i) => (
                   <li key={i}>
                     {set.exercise_name}: {set.reps} reps @ {set.weight_kg}kg
@@ -92,26 +92,26 @@ export default function Workouts() {
               </ul>
             </li>
           ))}
-          {sessions.length === 0 && <p className="text-slate-500 text-sm">Todavía no registraste entrenamientos.</p>}
+          {sessions.length === 0 && <p className="text-slate-500 dark:text-slate-400 text-sm">Todavía no registraste entrenamientos.</p>}
         </ul>
       </div>
 
       <div>
-        <h2 className="text-lg font-semibold text-slate-900 mb-2">Progreso</h2>
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50 mb-2">Progreso</h2>
         <div className="flex gap-2 mb-4">
           <input
             value={progressExercise}
             onChange={(e) => setProgressExercise(e.target.value)}
             placeholder="Nombre del ejercicio"
-            className="flex-1 rounded-md border border-slate-300 px-3 py-2"
+            className="flex-1 rounded-md border border-slate-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-slate-900 dark:text-slate-100 px-3 py-2"
           />
-          <button onClick={handleProgress} className="bg-slate-100 text-slate-700 px-4 py-2 rounded-md text-sm font-medium">
+          <button onClick={handleProgress} className="bg-slate-100 dark:bg-neutral-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-md text-sm font-medium">
             Ver progreso
           </button>
         </div>
         {locked && <UpgradeWall feature="Progreso de entrenamientos" />}
         {progress && (
-          <div className="text-sm text-slate-600">
+          <div className="text-sm text-slate-600 dark:text-slate-400">
             <p className="mb-2">Récord personal: {progress.personal_record_kg}kg</p>
             <ul>
               {progress.entries.map((e, i) => (

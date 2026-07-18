@@ -76,9 +76,9 @@ export default function Finance() {
   return (
     <div className="max-w-2xl space-y-8">
       <div>
-        <h1 className="text-xl font-semibold text-slate-900 mb-4">Finanzas</h1>
+        <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-4">Finanzas</h1>
         <div className="grid grid-cols-2 gap-2 mb-2">
-          <select aria-label="Tipo de movimiento" value={type} onChange={(e) => setType(e.target.value as "income" | "expense")} className="rounded-md border border-slate-300 px-3 py-2">
+          <select aria-label="Tipo de movimiento" value={type} onChange={(e) => setType(e.target.value as "income" | "expense")} className="rounded-md border border-slate-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-slate-900 dark:text-slate-100 px-3 py-2">
             <option value="expense">Gasto</option>
             <option value="income">Ingreso</option>
           </select>
@@ -87,16 +87,16 @@ export default function Finance() {
             value={amount || ""}
             onChange={(e) => setAmount(Number(e.target.value))}
             placeholder="Monto"
-            className="rounded-md border border-slate-300 px-3 py-2"
+            className="rounded-md border border-slate-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-slate-900 dark:text-slate-100 px-3 py-2"
           />
           <input
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             placeholder="Categoría"
-            className="rounded-md border border-slate-300 px-3 py-2"
+            className="rounded-md border border-slate-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-slate-900 dark:text-slate-100 px-3 py-2"
           />
           {familyGroups.length > 0 && (
-            <select aria-label="Compartir con grupo familiar" value={shareGroupId} onChange={(e) => setShareGroupId(e.target.value)} className="rounded-md border border-slate-300 px-3 py-2">
+            <select aria-label="Compartir con grupo familiar" value={shareGroupId} onChange={(e) => setShareGroupId(e.target.value)} className="rounded-md border border-slate-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-slate-900 dark:text-slate-100 px-3 py-2">
               <option value="">Personal</option>
               {familyGroups.map((m) => (
                 <option key={m.group.id} value={m.group.id}>
@@ -106,7 +106,7 @@ export default function Finance() {
             </select>
           )}
         </div>
-        <button onClick={handleCreate} className="bg-slate-900 text-white px-4 py-2 rounded-md text-sm font-medium mb-6">
+        <button onClick={handleCreate} className="bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-4 py-2 rounded-md text-sm font-medium mb-6">
           Registrar
         </button>
 
@@ -115,7 +115,7 @@ export default function Finance() {
             aria-label="Vista de movimientos"
             value={viewGroupId}
             onChange={(e) => handleViewChange(e.target.value)}
-            className="mb-4 rounded-md border border-slate-300 px-3 py-2 text-sm"
+            className="mb-4 rounded-md border border-slate-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-slate-900 dark:text-slate-100 px-3 py-2 text-sm"
           >
             <option value="">Mis movimientos personales</option>
             {familyGroups.map((m) => (
@@ -128,33 +128,33 @@ export default function Finance() {
 
         <ul className="space-y-2">
           {transactions.map((t) => (
-            <li key={t.id} className="bg-white border border-slate-200 rounded-lg p-3 flex justify-between text-sm">
+            <li key={t.id} className="bg-white dark:bg-neutral-900 border border-slate-200 dark:border-neutral-800 rounded-lg p-3 flex justify-between text-sm text-slate-800 dark:text-slate-200">
               <span>
-                {t.category} {t.group_id && <span className="text-xs text-slate-400">(familia)</span>}
+                {t.category} {t.group_id && <span className="text-xs text-slate-400 dark:text-slate-500">(familia)</span>}
               </span>
-              <span className={t.type === "income" ? "text-emerald-600" : "text-red-600"}>
+              <span className={t.type === "income" ? "text-emerald-600 dark:text-emerald-400" : "text-red-600 dark:text-red-400"}>
                 {t.type === "income" ? "+" : "-"}
                 {t.amount}
               </span>
             </li>
           ))}
-          {transactions.length === 0 && <p className="text-slate-500 text-sm">Todavía no registraste movimientos.</p>}
+          {transactions.length === 0 && <p className="text-slate-500 dark:text-slate-400 text-sm">Todavía no registraste movimientos.</p>}
         </ul>
       </div>
 
       <div>
-        <h2 className="text-lg font-semibold text-slate-900 mb-2">Resumen</h2>
+        <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50 mb-2">Resumen</h2>
         <div className="flex gap-2 mb-4">
-          <button onClick={handleSummary} className="bg-slate-100 text-slate-700 px-4 py-2 rounded-md text-sm font-medium">
+          <button onClick={handleSummary} className="bg-slate-100 dark:bg-neutral-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-md text-sm font-medium">
             Ver resumen
           </button>
-          <button onClick={handleExport} className="bg-slate-100 text-slate-700 px-4 py-2 rounded-md text-sm font-medium">
+          <button onClick={handleExport} className="bg-slate-100 dark:bg-neutral-800 text-slate-700 dark:text-slate-300 px-4 py-2 rounded-md text-sm font-medium">
             Exportar CSV
           </button>
         </div>
         {locked && <UpgradeWall feature="Resumen y exportación financiera" />}
         {summary && (
-          <div className="text-sm text-slate-600">
+          <div className="text-sm text-slate-600 dark:text-slate-400">
             <p>Balance: {summary.balance}</p>
             <p>Ingresos: {summary.income} / Gastos: {summary.expenses}</p>
           </div>

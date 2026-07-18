@@ -2,17 +2,25 @@ import { useEffect, useRef, useState } from "react";
 import * as notesApi from "../../api/notes";
 import { UpgradeRequiredError } from "../../api/client";
 import UpgradeWall from "../../components/UpgradeWall";
+import { useTheme } from "../../context/ThemeContext";
 
 type PositionedNode = notesApi.GraphNode & { x: number; y: number; vx: number; vy: number };
 
 const WIDTH = 640;
 const HEIGHT = 420;
 
-const kindColor: Record<string, string> = {
+const kindColorLight: Record<string, string> = {
   note: "#0f172a",
   habit: "#059669",
   workout: "#2563eb",
   finance: "#d97706",
+};
+
+const kindColorDark: Record<string, string> = {
+  note: "#f1f5f9",
+  habit: "#34d399",
+  workout: "#60a5fa",
+  finance: "#fbbf24",
 };
 
 // A small hand-rolled force simulation (repulsion between all nodes, spring
@@ -93,6 +101,10 @@ export default function NotesGraph() {
   const [locked, setLocked] = useState(false);
   const loaded = useRef(false);
   const nodes = useForceLayout(graph);
+  const { theme } = useTheme();
+  const kindColor = theme === "dark" ? kindColorDark : kindColorLight;
+  const edgeColor = theme === "dark" ? "#404040" : "#cbd5e1";
+  const labelColor = theme === "dark" ? "#e2e8f0" : "#334155";
 
   useEffect(() => {
     if (loaded.current) return;
@@ -106,24 +118,24 @@ export default function NotesGraph() {
   }, []);
 
   if (locked) return <UpgradeWall feature="Vista de grafo de notas" />;
-  if (!graph) return <p className="text-slate-500">Cargando grafo...</p>;
+  if (!graph) return <p className="text-slate-500 dark:text-slate-400">Cargando grafo...</p>;
 
   const byId = new Map(nodes.map((n) => [n.id, n]));
 
   return (
     <div>
-      <h1 className="text-xl font-semibold text-slate-900 mb-4">Grafo de notas</h1>
-      <svg width={WIDTH} height={HEIGHT} className="bg-white border border-slate-200 rounded-lg">
+      <h1 className="text-xl font-semibold text-slate-900 dark:text-slate-50 mb-4">Grafo de notas</h1>
+      <svg width={WIDTH} height={HEIGHT} className="bg-white dark:bg-neutral-900 border border-slate-200 dark:border-neutral-800 rounded-lg">
         {graph.edges.map((e, i) => {
           const from = byId.get(e.from);
           const to = byId.get(e.to);
           if (!from || !to) return null;
-          return <line key={i} x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke="#cbd5e1" strokeWidth={1} />;
+          return <line key={i} x1={from.x} y1={from.y} x2={to.x} y2={to.y} stroke={edgeColor} strokeWidth={1} />;
         })}
         {nodes.map((n) => (
           <g key={n.id}>
             <circle cx={n.x} cy={n.y} r={8} fill={kindColor[n.kind] ?? "#64748b"} />
-            <text x={n.x + 12} y={n.y + 4} fontSize={11} fill="#334155">
+            <text x={n.x + 12} y={n.y + 4} fontSize={11} fill={labelColor}>
               {n.title}
             </text>
           </g>
