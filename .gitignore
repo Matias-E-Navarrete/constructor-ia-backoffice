@@ -1,0 +1,11 @@
+# backend (Go)
+backend/.env
+/tmp/
+
+# frontend (Node)
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/test-results/
+frontend/playwright-report/
+frontend/playwright/.cache/
