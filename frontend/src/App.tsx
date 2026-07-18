@@ -9,7 +9,9 @@ import Tasks from "./pages/app/Tasks";
 import Inbox from "./pages/app/Inbox";
 import Planner from "./pages/app/Planner";
 import Habits from "./pages/app/Habits";
+import Panorama from "./pages/app/Panorama";
 import Workouts from "./pages/app/Workouts";
+import Studies from "./pages/app/Studies";
 import Finance from "./pages/app/Finance";
 import Family from "./pages/app/Family";
 import Coaching from "./pages/app/Coaching";
@@ -55,7 +57,9 @@ export default function App() {
         <Route path="inbox" element={<Inbox />} />
         <Route path="planner" element={<Planner />} />
         <Route path="habits" element={<Habits />} />
+        <Route path="habits/panorama" element={<Panorama />} />
         <Route path="workouts" element={<Workouts />} />
+        <Route path="studies" element={<Studies />} />
         <Route path="finance" element={<Finance />} />
         <Route path="notes" element={<Notes />} />
         <Route path="notes/graph" element={<NotesGraph />} />

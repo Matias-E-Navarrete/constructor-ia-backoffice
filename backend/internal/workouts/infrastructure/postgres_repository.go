@@ -128,6 +128,31 @@ func (r *PostgresRepository) ProgressForExercise(ctx context.Context, userID, ex
 	return entries, rows.Err()
 }
 
+func (r *PostgresRepository) AllPersonalRecords(ctx context.Context, userID string) ([]domain.ExercisePR, error) {
+	rows, err := r.pool.Query(ctx, `
+		SELECT s.exercise_name, MAX(s.weight_kg)
+		FROM workout_sets s
+		JOIN workout_sessions ws ON ws.id = s.session_id
+		WHERE ws.user_id = $1
+		GROUP BY s.exercise_name
+		ORDER BY s.exercise_name
+	`, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var prs []domain.ExercisePR
+	for rows.Next() {
+		var pr domain.ExercisePR
+		if err := rows.Scan(&pr.ExerciseName, &pr.PersonalRecordKg); err != nil {
+			return nil, err
+		}
+		prs = append(prs, pr)
+	}
+	return prs, rows.Err()
+}
+
 func (r *PostgresRepository) listSets(ctx context.Context, sessionID string) ([]domain.Set, error) {
 	rows, err := r.pool.Query(ctx, `
 		SELECT exercise_name, set_number, reps, weight_kg

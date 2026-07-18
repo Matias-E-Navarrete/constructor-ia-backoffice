@@ -49,6 +49,10 @@ import (
 	inboxapplication "rimu/backend/internal/inbox/application"
 	inboxinfrastructure "rimu/backend/internal/inbox/infrastructure"
 	inboxhttp "rimu/backend/internal/inbox/interfaces/http"
+
+	studiesapplication "rimu/backend/internal/studies/application"
+	studiesinfrastructure "rimu/backend/internal/studies/infrastructure"
+	studieshttp "rimu/backend/internal/studies/interfaces/http"
 )
 
 // Build is the composition root logic shared by cmd/api/main.go and the
@@ -82,6 +86,8 @@ func Build(ctx context.Context, cfg config.Config) (*chi.Mux, *pgxpool.Pool, err
 	tasksRepo := tasksinfrastructure.NewPostgresRepository(pool)
 	inboxRepo := inboxinfrastructure.NewPostgresRepository(pool)
 	accountsRepo := financeinfrastructure.NewPostgresAccountRepository(pool)
+	routinesRepo := workoutsinfrastructure.NewPostgresRoutineRepository(pool)
+	studiesRepo := studiesinfrastructure.NewPostgresRepository(pool)
 
 	userHandler := &userhttp.Handler{
 		Register:           &userapplication.RegisterUser{Repo: userRepo, IsAdminEmail: cfg.IsAdminEmail},
@@ -100,20 +106,25 @@ func Build(ctx context.Context, cfg config.Config) (*chi.Mux, *pgxpool.Pool, err
 	}
 
 	habitsHandler := &habitshttp.Handler{
-		Create:   &habitsapplication.CreateHabit{Repo: habitsRepo},
-		Update:   &habitsapplication.UpdateHabit{Repo: habitsRepo},
-		Delete:   &habitsapplication.DeleteHabit{Repo: habitsRepo},
-		CheckIn:  &habitsapplication.CheckInHabit{Repo: habitsRepo},
-		List:     &habitsapplication.ListHabits{Repo: habitsRepo, Groups: groupsRepo},
-		GetStats: &habitsapplication.GetHabitStats{Repo: habitsRepo},
+		Create:      &habitsapplication.CreateHabit{Repo: habitsRepo},
+		Update:      &habitsapplication.UpdateHabit{Repo: habitsRepo},
+		Delete:      &habitsapplication.DeleteHabit{Repo: habitsRepo},
+		CheckIn:     &habitsapplication.CheckInHabit{Repo: habitsRepo},
+		List:        &habitsapplication.ListHabits{Repo: habitsRepo, Groups: groupsRepo},
+		GetStats:    &habitsapplication.GetHabitStats{Repo: habitsRepo},
+		GetPanorama: &habitsapplication.GetPanorama{Repo: habitsRepo},
 	}
 
 	workoutsHandler := &workoutshttp.Handler{
-		LogSession:   &workoutsapplication.LogSession{Repo: workoutsRepo},
-		ListSessions: &workoutsapplication.ListSessions{Repo: workoutsRepo, Groups: groupsRepo},
-		GetSession:   &workoutsapplication.GetSession{Repo: workoutsRepo},
-		Delete:       &workoutsapplication.DeleteSession{Repo: workoutsRepo},
-		GetProgress:  &workoutsapplication.GetExerciseProgress{Repo: workoutsRepo},
+		LogSession:         &workoutsapplication.LogSession{Repo: workoutsRepo},
+		ListSessions:       &workoutsapplication.ListSessions{Repo: workoutsRepo, Groups: groupsRepo},
+		GetSession:         &workoutsapplication.GetSession{Repo: workoutsRepo},
+		Delete:             &workoutsapplication.DeleteSession{Repo: workoutsRepo},
+		GetProgress:        &workoutsapplication.GetExerciseProgress{Repo: workoutsRepo},
+		GetPersonalRecords: &workoutsapplication.GetPersonalRecords{Repo: workoutsRepo},
+		CreateRoutine:      &workoutsapplication.CreateRoutine{Repo: routinesRepo},
+		ListRoutines:       &workoutsapplication.ListRoutines{Repo: routinesRepo},
+		DeleteRoutine:      &workoutsapplication.DeleteRoutine{Repo: routinesRepo},
 	}
 
 	financeHandler := &financehttp.Handler{
@@ -163,6 +174,15 @@ func Build(ctx context.Context, cfg config.Config) (*chi.Mux, *pgxpool.Pool, err
 		Delete:    &inboxapplication.DeleteItem{Repo: inboxRepo},
 	}
 
+	studiesHandler := &studieshttp.Handler{
+		CreateSubject: &studiesapplication.CreateSubject{Repo: studiesRepo},
+		ListSubjects:  &studiesapplication.ListSubjects{Repo: studiesRepo},
+		DeleteSubject: &studiesapplication.DeleteSubject{Repo: studiesRepo},
+		LogSession:    &studiesapplication.LogStudySession{Repo: studiesRepo},
+		ListSessions:  &studiesapplication.ListSessions{Repo: studiesRepo},
+		GetOverview:   &studiesapplication.GetStudyOverview{Repo: studiesRepo},
+	}
+
 	adminHandler := &adminhttp.Handler{
 		ListRoadmap:         &adminapplication.ListRoadmap{Repo: roadmapRepo},
 		CreateRoadmapItem:   &adminapplication.CreateRoadmapItem{Repo: roadmapRepo},
@@ -189,16 +209,18 @@ func Build(ctx context.Context, cfg config.Config) (*chi.Mux, *pgxpool.Pool, err
 		groupshttp.Mount(api, groupsHandler, requireAuth, feature("groups"))
 
 		habitshttp.Mount(api, habitsHandler, habitshttp.Middlewares{
-			RequireAuth:       requireAuth,
-			RequireModuleFlag: feature("habits"),
-			RequireStatsFlag:  feature("habits.stats"),
-			RequirePro:        requirePro,
+			RequireAuth:         requireAuth,
+			RequireModuleFlag:   feature("habits"),
+			RequireStatsFlag:    feature("habits.stats"),
+			RequirePanoramaFlag: feature("habits.panorama"),
+			RequirePro:          requirePro,
 		})
 
 		workoutshttp.Mount(api, workoutsHandler, workoutshttp.Middlewares{
 			RequireAuth:         requireAuth,
 			RequireModuleFlag:   feature("workouts"),
 			RequireProgressFlag: feature("workouts.progress"),
+			RequireRoutinesFlag: feature("workouts.routines"),
 			RequirePro:          requirePro,
 		})
 
@@ -220,6 +242,13 @@ func Build(ctx context.Context, cfg config.Config) (*chi.Mux, *pgxpool.Pool, err
 
 		taskshttp.Mount(api, tasksHandler, requireAuth, feature("tasks"))
 		inboxhttp.Mount(api, inboxHandler, requireAuth, feature("inbox"))
+
+		studieshttp.Mount(api, studiesHandler, studieshttp.Middlewares{
+			RequireAuth:         requireAuth,
+			RequireModuleFlag:   feature("studies"),
+			RequireOverviewFlag: feature("studies.overview"),
+			RequirePro:          requirePro,
+		})
 
 		adminhttp.Mount(api, adminHandler, requireAuth, requireAdmin)
 	})

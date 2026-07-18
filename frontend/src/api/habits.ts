@@ -27,3 +27,17 @@ export function deleteHabit(id: string) {
 export function getHabitStats(id: string) {
   return apiFetch<HabitStats>(`/api/habits/${id}/stats`);
 }
+
+export type HeatmapDay = { date: string; completed: boolean };
+export type PanoramaHabit = {
+  habit_id: string;
+  name: string;
+  current_streak: number;
+  best_streak: number;
+  heatmap: HeatmapDay[];
+  weekly_rates: number[];
+};
+
+export function getPanorama() {
+  return apiFetch<PanoramaHabit[]>("/api/habits/panorama");
+}

@@ -33,3 +33,23 @@ export function deleteSession(id: string) {
 export function getProgress(exercise: string) {
   return apiFetch<Progress>("/api/workouts/progress", { query: { exercise } });
 }
+
+export type PersonalRecord = { exercise_name: string; personal_record_kg: number };
+
+export function getPersonalRecords() {
+  return apiFetch<PersonalRecord[]>("/api/workouts/personal-records");
+}
+
+export type Routine = { id: string; name: string; exercises: string[] };
+
+export function listRoutines() {
+  return apiFetch<Routine[]>("/api/workouts/routines");
+}
+
+export function createRoutine(name: string, exercises: string[]) {
+  return apiFetch<Routine>("/api/workouts/routines", { method: "POST", body: { name, exercises } });
+}
+
+export function deleteRoutine(id: string) {
+  return apiFetch<void>(`/api/workouts/routines/${id}`, { method: "DELETE" });
+}

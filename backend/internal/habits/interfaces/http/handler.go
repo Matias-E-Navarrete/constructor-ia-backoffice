@@ -12,12 +12,13 @@ import (
 )
 
 type Handler struct {
-	Create    *application.CreateHabit
-	Update    *application.UpdateHabit
-	Delete    *application.DeleteHabit
-	CheckIn   *application.CheckInHabit
-	List      *application.ListHabits
-	GetStats  *application.GetHabitStats
+	Create      *application.CreateHabit
+	Update      *application.UpdateHabit
+	Delete      *application.DeleteHabit
+	CheckIn     *application.CheckInHabit
+	List        *application.ListHabits
+	GetStats    *application.GetHabitStats
+	GetPanorama *application.GetPanorama
 }
 
 func (h *Handler) HandleCreate(w nethttp.ResponseWriter, r *nethttp.Request) {
@@ -143,4 +144,20 @@ func (h *Handler) HandleStats(w nethttp.ResponseWriter, r *nethttp.Request) {
 		return
 	}
 	httpkit.WriteJSON(w, nethttp.StatusOK, toStatsResponse(stats))
+}
+
+func (h *Handler) HandlePanorama(w nethttp.ResponseWriter, r *nethttp.Request) {
+	user, _ := httpmiddleware.UserFromContext(r.Context())
+
+	panorama, err := h.GetPanorama.Execute(r.Context(), user.ID)
+	if err != nil {
+		httpkit.WriteError(w, nethttp.StatusInternalServerError, "internal_error", err.Error())
+		return
+	}
+
+	resp := make([]panoramaHabitResponse, 0, len(panorama))
+	for _, p := range panorama {
+		resp = append(resp, toPanoramaResponse(p))
+	}
+	httpkit.WriteJSON(w, nethttp.StatusOK, resp)
 }

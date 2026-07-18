@@ -13,7 +13,7 @@ test("log session, history shown, progress locked then unlocked", async ({ page 
 
   await page.getByPlaceholder("Nombre del ejercicio").fill("Sentadilla");
   await page.getByRole("button", { name: "Ver progreso" }).click();
-  await expect(page.getByText("es una función Pro")).toBeVisible();
+  await expect(page.getByText("Progreso de entrenamientos es")).toBeVisible();
 
   await upgradeToPro(page);
   await page.goto("/app/workouts");

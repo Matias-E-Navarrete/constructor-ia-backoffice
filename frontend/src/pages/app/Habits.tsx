@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import * as habitsApi from "../../api/habits";
 import { UpgradeRequiredError, FeatureDisabledError } from "../../api/client";
 import UpgradeWall from "../../components/UpgradeWall";
@@ -53,7 +54,12 @@ export default function Habits() {
 
   return (
     <div className="max-w-2xl">
-      <h1 className="text-xl font-semibold text-neutral-900 dark:text-neutral-50 mb-4">Hábitos</h1>
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-xl font-semibold text-neutral-900 dark:text-neutral-50">Hábitos</h1>
+        <Link to="/app/habits/panorama" className="text-sm text-accent-strong dark:text-accent-soft font-medium">
+          Ver Panorama →
+        </Link>
+      </div>
 
       <div className="flex gap-2 mb-6">
         <input

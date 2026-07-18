@@ -9,6 +9,7 @@ const navItems = [
   { to: "/app/inbox", label: "Bandeja" },
   { to: "/app/habits", label: "Hábitos" },
   { to: "/app/workouts", label: "Entrenamientos" },
+  { to: "/app/studies", label: "Estudios" },
   { to: "/app/finance", label: "Finanzas" },
   { to: "/app/notes", label: "Notas" },
   { to: "/app/family", label: "Familia" },

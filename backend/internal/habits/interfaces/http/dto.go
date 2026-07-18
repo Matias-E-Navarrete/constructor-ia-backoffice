@@ -41,3 +41,32 @@ func toStatsResponse(s domain.Stats) statsResponse {
 		CurrentStreak:  s.CurrentStreak,
 	}
 }
+
+type heatmapDayResponse struct {
+	Date      string `json:"date"`
+	Completed bool   `json:"completed"`
+}
+
+type panoramaHabitResponse struct {
+	HabitID       string               `json:"habit_id"`
+	Name          string               `json:"name"`
+	CurrentStreak int                  `json:"current_streak"`
+	BestStreak    int                  `json:"best_streak"`
+	Heatmap       []heatmapDayResponse `json:"heatmap"`
+	WeeklyRates   []float64            `json:"weekly_rates"`
+}
+
+func toPanoramaResponse(p domain.PanoramaHabit) panoramaHabitResponse {
+	heatmap := make([]heatmapDayResponse, 0, len(p.Heatmap))
+	for _, d := range p.Heatmap {
+		heatmap = append(heatmap, heatmapDayResponse{Date: d.Date, Completed: d.Completed})
+	}
+	return panoramaHabitResponse{
+		HabitID:       p.HabitID,
+		Name:          p.Name,
+		CurrentStreak: p.CurrentStreak,
+		BestStreak:    p.BestStreak,
+		Heatmap:       heatmap,
+		WeeklyRates:   p.WeeklyRates,
+	}
+}

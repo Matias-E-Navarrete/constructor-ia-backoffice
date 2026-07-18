@@ -73,3 +73,27 @@ func parseDate(s string, fallback time.Time) (time.Time, error) {
 	}
 	return time.Parse("2006-01-02", s)
 }
+
+type createRoutineRequest struct {
+	Name      string   `json:"name"`
+	Exercises []string `json:"exercises"`
+}
+
+type routineResponse struct {
+	ID        string   `json:"id"`
+	Name      string   `json:"name"`
+	Exercises []string `json:"exercises"`
+}
+
+func toRoutineResponse(r domain.Routine) routineResponse {
+	return routineResponse{ID: r.ID, Name: r.Name, Exercises: r.Exercises}
+}
+
+type personalRecordResponse struct {
+	ExerciseName     string  `json:"exercise_name"`
+	PersonalRecordKg float64 `json:"personal_record_kg"`
+}
+
+func toPersonalRecordResponse(pr domain.ExercisePR) personalRecordResponse {
+	return personalRecordResponse{ExerciseName: pr.ExerciseName, PersonalRecordKg: pr.PersonalRecordKg}
+}

@@ -7,10 +7,11 @@ import (
 )
 
 type Middlewares struct {
-	RequireAuth       func(nethttp.Handler) nethttp.Handler
-	RequireModuleFlag func(nethttp.Handler) nethttp.Handler // "workouts"
-	RequireProgressFlag func(nethttp.Handler) nethttp.Handler // "workouts.progress"
-	RequirePro        func(nethttp.Handler) nethttp.Handler
+	RequireAuth          func(nethttp.Handler) nethttp.Handler
+	RequireModuleFlag    func(nethttp.Handler) nethttp.Handler // "workouts"
+	RequireProgressFlag  func(nethttp.Handler) nethttp.Handler // "workouts.progress"
+	RequireRoutinesFlag  func(nethttp.Handler) nethttp.Handler // "workouts.routines"
+	RequirePro           func(nethttp.Handler) nethttp.Handler
 }
 
 func Mount(r chi.Router, h *Handler, mw Middlewares) {
@@ -23,5 +24,13 @@ func Mount(r chi.Router, h *Handler, mw Middlewares) {
 		r.Delete("/{id}", h.HandleDelete)
 
 		r.With(mw.RequireProgressFlag, mw.RequirePro).Get("/progress", h.HandleProgress)
+		r.With(mw.RequireProgressFlag, mw.RequirePro).Get("/personal-records", h.HandlePersonalRecords)
+
+		r.Route("/routines", func(r chi.Router) {
+			r.Use(mw.RequireRoutinesFlag, mw.RequirePro)
+			r.Get("/", h.HandleListRoutines)
+			r.Post("/", h.HandleCreateRoutine)
+			r.Delete("/{id}", h.HandleDeleteRoutine)
+		})
 	})
 }
