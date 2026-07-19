@@ -7,7 +7,7 @@ export default function UpgradeWall({ feature }: { feature: string }) {
         {feature} es una función <span className="text-accent-strong dark:text-accent-soft">Pro</span>
       </p>
       <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-4">Mejorá tu plan para desbloquearla.</p>
-      <Link to="/app/upgrade" className="inline-block bg-accent text-white text-sm font-medium px-4 py-2 rounded-md">
+      <Link to="/app/upgrade" className="btn-accent text-sm">
         Ver planes
       </Link>
     </div>

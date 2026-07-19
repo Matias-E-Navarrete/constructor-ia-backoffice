@@ -76,7 +76,7 @@ export default function FocusMode({ onClose }: { onClose: () => void }) {
         <div className="flex gap-3 mt-6">
           <button
             onClick={() => setRunning((r) => !r)}
-            className="w-11 h-11 rounded-full bg-accent text-white flex items-center justify-center shadow-glow-sm transition-transform duration-150 hover:scale-105 active:scale-95"
+            className="w-11 h-11 rounded-full bg-accent text-white flex items-center justify-center shadow-neon-sm transition-all duration-150 hover:scale-105 hover:shadow-neon active:scale-95"
           >
             {running ? "❚❚" : "▶"}
           </button>

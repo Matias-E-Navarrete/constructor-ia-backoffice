@@ -49,23 +49,23 @@ html.dark ::-webkit-scrollbar-thumb {
   /* Shared surface/action tokens so every page draws from the same small
      set of primitives instead of re-deriving card/button styling by hand. */
   .surface-card {
-    @apply rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm transition-shadow duration-200;
+    @apply rounded-xl border border-neutral-200/80 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm transition-all duration-200;
   }
   .surface-card-hover {
-    @apply surface-card hover:shadow-md hover:border-neutral-300 dark:hover:border-neutral-700;
+    @apply surface-card hover:shadow-neon-sm hover:border-accent/40 dark:hover:border-accent/50;
   }
 
   .btn {
     @apply inline-flex items-center justify-center gap-1.5 rounded-lg text-sm font-medium transition-all duration-150 active:scale-[0.98] disabled:opacity-50 disabled:pointer-events-none;
   }
   .btn-primary {
-    @apply btn bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-4 py-2 hover:opacity-90;
+    @apply btn bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 px-4 py-2 hover:opacity-90 hover:shadow-neon-sm;
   }
   .btn-secondary {
     @apply btn bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 px-4 py-2 hover:bg-neutral-200 dark:hover:bg-neutral-700;
   }
   .btn-accent {
-    @apply btn bg-accent text-white px-4 py-2 shadow-glow-sm hover:brightness-110;
+    @apply btn bg-accent text-white text-neon-white px-4 py-2 shadow-neon-sm hover:brightness-110 hover:shadow-neon;
   }
   .btn-ghost {
     @apply btn text-neutral-600 dark:text-neutral-300 hover:bg-neutral-100 dark:hover:bg-neutral-800 px-3 py-1.5;
@@ -73,5 +73,14 @@ html.dark ::-webkit-scrollbar-thumb {
 
   .input-field {
     @apply rounded-lg border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 px-3 py-2 text-sm placeholder:text-neutral-400 dark:placeholder:text-neutral-500 transition-colors duration-150 focus:border-accent/50 dark:focus:border-accent/60;
+  }
+
+  /* Glowing text — the "lit sign" look for accent-colored labels (badges,
+     buttons on the accent fill, celebratory highlights). */
+  .text-neon {
+    text-shadow: 0 0 10px rgba(217, 70, 239, 0.75), 0 0 2px rgba(217, 70, 239, 0.9);
+  }
+  .text-neon-white {
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.65), 0 0 2px rgba(255, 255, 255, 0.8);
   }
 }

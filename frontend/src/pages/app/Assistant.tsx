@@ -78,7 +78,7 @@ export default function Assistant() {
 
       {!locked && messages.length === 0 && (
         <div className="flex-1 flex flex-col items-center justify-center gap-6 px-4">
-          <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center shadow-glow">
+          <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center shadow-neon">
             <IconAssistant width={22} height={22} className="text-white" />
           </div>
           <div className="text-center">
@@ -113,7 +113,7 @@ export default function Assistant() {
                 </div>
               ) : (
                 <div key={m.id} className="flex gap-3">
-                  <div className="w-6 h-6 rounded-md bg-accent flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <div className="w-6 h-6 rounded-md bg-accent flex items-center justify-center flex-shrink-0 mt-0.5 shadow-neon-sm">
                     <IconAssistant width={13} height={13} className="text-white" />
                   </div>
                   <p className="flex-1 pt-0.5 text-sm text-neutral-800 dark:text-neutral-200 leading-relaxed whitespace-pre-wrap">{m.content}</p>

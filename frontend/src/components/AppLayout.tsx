@@ -65,7 +65,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
         <span
           className={`inline-flex items-center text-xs px-2 py-0.5 rounded-full font-semibold tracking-wide ${
             user?.plan === "pro"
-              ? "bg-accent text-white shadow-glow-sm"
+              ? "bg-accent text-white text-neon-white shadow-neon-sm"
               : "bg-neutral-100 text-neutral-600 dark:bg-neutral-800 dark:text-neutral-400"
           }`}
         >
@@ -80,9 +80,9 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
             to={item.to}
             onClick={onNavigate}
             className={({ isActive }) =>
-              `group flex items-center gap-2.5 whitespace-nowrap px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150 ${
+              `group flex items-center gap-2.5 whitespace-nowrap px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 ${
                 isActive
-                  ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
+                  ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 shadow-neon-sm"
                   : "text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200/60 dark:hover:bg-neutral-800/60 hover:text-neutral-900 dark:hover:text-neutral-100"
               }`
             }
@@ -97,9 +97,9 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
         to="/app/upgrade"
         onClick={onNavigate}
         className={({ isActive }) =>
-          `mt-1 flex items-center gap-2.5 whitespace-nowrap px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150 ${
+          `mt-1 flex items-center gap-2.5 whitespace-nowrap px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 ${
             isActive
-              ? "bg-accent text-white shadow-glow-sm"
+              ? "bg-accent text-white text-neon-white shadow-neon-sm"
               : "text-accent-strong dark:text-accent-soft hover:bg-fuchsia-50 dark:hover:bg-fuchsia-950/40"
           }`
         }

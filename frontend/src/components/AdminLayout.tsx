@@ -14,7 +14,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   return (
     <>
       <div className="mb-5 flex items-center gap-2.5">
-        <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center flex-shrink-0 shadow-glow-sm">
+        <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center flex-shrink-0 shadow-neon-sm">
           <span className="text-white font-bold text-sm">r</span>
         </div>
         <div className="min-w-0">
@@ -36,9 +36,9 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
             end={item.end}
             onClick={onNavigate}
             className={({ isActive }) =>
-              `flex items-center gap-2.5 whitespace-nowrap px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150 ${
+              `flex items-center gap-2.5 whitespace-nowrap px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 ${
                 isActive
-                  ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
+                  ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900 shadow-neon-sm"
                   : "text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200/60 dark:hover:bg-neutral-800/60 hover:text-neutral-900 dark:hover:text-neutral-100"
               }`
             }
@@ -62,7 +62,7 @@ export default function AdminLayout() {
     <div className="min-h-screen flex flex-col md:flex-row bg-white dark:bg-black">
       <header className="md:hidden sticky top-0 z-30 flex items-center justify-between px-4 py-3 bg-white/95 dark:bg-black/95 backdrop-blur border-b border-neutral-200 dark:border-neutral-800">
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 rounded-lg bg-accent flex items-center justify-center flex-shrink-0">
+          <div className="w-7 h-7 rounded-lg bg-accent flex items-center justify-center flex-shrink-0 shadow-neon-sm">
             <span className="text-white font-bold text-xs">r</span>
           </div>
           <span className="font-semibold text-neutral-900 dark:text-neutral-50">admin</span>

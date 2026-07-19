@@ -19,6 +19,11 @@ export default {
         // one "specific detail" allowed to feel like light instead of ink.
         glow: "0 0 0 1px rgba(217,70,239,0.25), 0 0 20px -2px rgba(217,70,239,0.45)",
         "glow-sm": "0 0 0 1px rgba(217,70,239,0.2), 0 0 10px -3px rgba(217,70,239,0.4)",
+        // A crisper "lit sign" version: a sharp colored border ring plus a
+        // wider halo, for the components that should read as electric/neon
+        // (accent buttons, badges, active nav item, hovered cards).
+        neon: "0 0 0 1.5px rgba(217,70,239,0.9), 0 0 1px 1px rgba(217,70,239,0.75), 0 0 16px 2px rgba(217,70,239,0.55), 0 0 34px -4px rgba(217,70,239,0.65)",
+        "neon-sm": "0 0 0 1.5px rgba(217,70,239,0.85), 0 0 10px 1px rgba(217,70,239,0.5), 0 0 20px -6px rgba(217,70,239,0.55)",
       },
     },
   },

@@ -35,7 +35,7 @@ export default function QuickAddFab() {
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label="Crear nuevo"
-        className="w-14 h-14 rounded-full bg-accent text-white text-2xl leading-none flex items-center justify-center shadow-glow transition-transform duration-150 hover:scale-105 active:scale-95"
+        className="w-14 h-14 rounded-full bg-accent text-white text-2xl leading-none flex items-center justify-center shadow-neon transition-all duration-150 hover:scale-105 active:scale-95"
       >
         {open ? "×" : "+"}
       </button>

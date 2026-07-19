@@ -51,7 +51,7 @@ export default function QuickAddTask({
   }
 
   return (
-    <div className="surface-card p-3 mb-4 focus-within:border-accent/40 focus-within:shadow-glow-sm">
+    <div className="surface-card p-3 mb-4 focus-within:border-accent/50 focus-within:shadow-neon-sm">
       <input
         value={title}
         onChange={(e) => setTitle(e.target.value)}
