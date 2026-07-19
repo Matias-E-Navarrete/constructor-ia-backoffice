@@ -3,6 +3,7 @@ import * as assistantApi from "../../api/assistant";
 import { UpgradeRequiredError, FeatureDisabledError } from "../../api/client";
 import UpgradeWall from "../../components/UpgradeWall";
 import FeatureDisabledBanner from "../../components/FeatureDisabledBanner";
+import { IconAssistant } from "../../components/icons";
 
 export default function Assistant() {
   const [messages, setMessages] = useState<assistantApi.AssistantMessage[]>([]);
@@ -55,67 +56,88 @@ export default function Assistant() {
 
   if (disabled) return <FeatureDisabledBanner />;
 
-  return (
-    <div className="max-w-2xl h-full flex flex-col">
-      <div className="flex items-center justify-between mb-4">
-        <h1 className="text-xl font-semibold text-neutral-900 dark:text-neutral-50">Asistente</h1>
-        {messages.length > 0 && (
-          <button onClick={handleClear} className="text-xs text-neutral-400 dark:text-neutral-500 hover:text-red-500 dark:hover:text-red-400 transition-colors duration-150">
-            Borrar conversación
-          </button>
-        )}
-      </div>
+  const inputBar = (
+    <div className="flex gap-2">
+      <input
+        value={draft}
+        onChange={(e) => setDraft(e.target.value)}
+        onKeyDown={(e) => e.key === "Enter" && handleSend()}
+        placeholder="Escribí tu mensaje..."
+        className="input-field flex-1 py-3"
+        disabled={sending}
+      />
+      <button onClick={handleSend} disabled={sending} className="btn-accent px-5">
+        Enviar
+      </button>
+    </div>
+  );
 
+  return (
+    <div className="max-w-3xl mx-auto w-full h-[calc(100vh-6rem)] flex flex-col">
       {locked && <UpgradeWall feature="El asistente de IA" />}
 
-      {!locked && (
+      {!locked && messages.length === 0 && (
+        <div className="flex-1 flex flex-col items-center justify-center gap-6 px-4">
+          <div className="w-12 h-12 rounded-xl bg-accent flex items-center justify-center shadow-glow">
+            <IconAssistant width={22} height={22} className="text-white" />
+          </div>
+          <div className="text-center">
+            <h1 className="text-2xl font-semibold text-neutral-900 dark:text-neutral-50 mb-1.5">¿En qué te ayudo hoy?</h1>
+            <p className="text-sm text-neutral-500 dark:text-neutral-400">Preguntame sobre tus tareas, hábitos, entrenamientos, estudio o finanzas.</p>
+          </div>
+          <div className="w-full max-w-xl">{inputBar}</div>
+          {notConfigured && (
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 text-center max-w-xl">
+              El asistente todavía no está configurado en este entorno (falta la API key). Tu mensaje quedó guardado.
+            </p>
+          )}
+        </div>
+      )}
+
+      {!locked && messages.length > 0 && (
         <>
-          <div className="surface-card flex-1 p-4 mb-3 min-h-[360px] max-h-[60vh] overflow-y-auto flex flex-col gap-3">
-            {messages.length === 0 && (
-              <p className="text-neutral-400 dark:text-neutral-500 text-sm m-auto text-center">
-                Preguntale lo que quieras sobre tus tareas, hábitos, entrenamientos o finanzas.
-              </p>
-            )}
-            {messages.map((m) => (
-              <div key={m.id} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
-                <div
-                  className={`max-w-[80%] rounded-xl px-3 py-2 text-sm whitespace-pre-wrap ${
-                    m.role === "user"
-                      ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
-                      : "bg-neutral-100 dark:bg-neutral-800 text-neutral-800 dark:text-neutral-200"
-                  }`}
-                >
-                  {m.content}
+          <div className="flex items-center justify-between mb-3 px-1">
+            <span className="text-sm font-medium text-neutral-500 dark:text-neutral-400">Asistente</span>
+            <button onClick={handleClear} className="text-xs text-neutral-400 dark:text-neutral-500 hover:text-red-500 dark:hover:text-red-400 transition-colors duration-150">
+              Borrar conversación
+            </button>
+          </div>
+
+          <div className="flex-1 overflow-y-auto px-1 space-y-6">
+            {messages.map((m) =>
+              m.role === "user" ? (
+                <div key={m.id} className="flex justify-end">
+                  <div className="max-w-[75%] rounded-2xl bg-neutral-100 dark:bg-neutral-800 px-4 py-2.5 text-sm text-neutral-900 dark:text-neutral-100 whitespace-pre-wrap">
+                    {m.content}
+                  </div>
                 </div>
-              </div>
-            ))}
+              ) : (
+                <div key={m.id} className="flex gap-3">
+                  <div className="w-6 h-6 rounded-md bg-accent flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <IconAssistant width={13} height={13} className="text-white" />
+                  </div>
+                  <p className="flex-1 pt-0.5 text-sm text-neutral-800 dark:text-neutral-200 leading-relaxed whitespace-pre-wrap">{m.content}</p>
+                </div>
+              )
+            )}
             {sending && (
-              <div className="flex justify-start">
-                <div className="bg-neutral-100 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-500 rounded-xl px-3 py-2 text-sm">Pensando...</div>
+              <div className="flex gap-3">
+                <div className="w-6 h-6 rounded-md bg-accent flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <IconAssistant width={13} height={13} className="text-white" />
+                </div>
+                <p className="pt-0.5 text-sm text-neutral-400 dark:text-neutral-500">Pensando...</p>
               </div>
             )}
             <div ref={bottomRef} />
           </div>
 
           {notConfigured && (
-            <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-2">
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-2 px-1">
               El asistente todavía no está configurado en este entorno (falta la API key). Tu mensaje quedó guardado.
             </p>
           )}
 
-          <div className="flex gap-2">
-            <input
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleSend()}
-              placeholder="Escribí tu mensaje..."
-              className="input-field flex-1"
-              disabled={sending}
-            />
-            <button onClick={handleSend} disabled={sending} className="btn-accent">
-              Enviar
-            </button>
-          </div>
+          <div className="pt-3 border-t border-neutral-200 dark:border-neutral-800">{inputBar}</div>
         </>
       )}
     </div>
