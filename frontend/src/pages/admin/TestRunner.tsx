@@ -18,7 +18,7 @@ export default function AdminTestRunner() {
   return (
     <div className="max-w-2xl">
       <h1 className="text-xl font-semibold text-neutral-900 dark:text-neutral-50 mb-4">Tests</h1>
-      <div className="flex gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-6">
         <button
           onClick={() => handleRun("backend")}
           disabled={running !== null}

@@ -64,18 +64,18 @@ export default function Habits() {
         </Link>
       </div>
 
-      <div className="flex gap-2 mb-6">
+      <div className="flex flex-col sm:flex-row gap-2 mb-6">
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Nuevo hábito"
-          className="input-field flex-1"
+          className="input-field flex-1 min-w-0"
         />
         <input
           value={noteSlug}
           onChange={(e) => setNoteSlug(e.target.value)}
           placeholder="Vincular a nota (slug, opcional)"
-          className="input-field flex-1"
+          className="input-field flex-1 min-w-0"
         />
         <button onClick={handleCreate} className="btn-primary">
           Agregar

@@ -151,7 +151,7 @@ export default function Workouts() {
     <div className="max-w-2xl space-y-8">
       <div>
         <h1 className="text-xl font-semibold text-neutral-900 dark:text-neutral-50 mb-4">Entrenamientos</h1>
-        <div className="grid grid-cols-3 gap-2 mb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-6">
           <input
             value={exercise}
             onChange={(e) => setExercise(e.target.value)}

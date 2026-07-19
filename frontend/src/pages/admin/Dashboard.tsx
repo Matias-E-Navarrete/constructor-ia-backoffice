@@ -33,12 +33,12 @@ export default function AdminDashboard() {
     <div>
       <h1 className="text-xl font-semibold text-neutral-900 dark:text-neutral-50 mb-4">Roadmap</h1>
 
-      <div className="flex gap-2 mb-6">
+      <div className="flex flex-col sm:flex-row gap-2 mb-6">
         <input
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Nueva tarea/feature/bug"
-          className="input-field flex-1"
+          className="input-field flex-1 min-w-0"
         />
         <select value={kind} onChange={(e) => setKind(e.target.value as adminApi.RoadmapItem["kind"])} className="input-field">
           <option value="task">Tarea</option>

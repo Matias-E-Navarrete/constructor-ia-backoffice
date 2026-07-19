@@ -212,7 +212,7 @@ export default function Finance() {
           </ul>
         </details>
 
-        <div className="grid grid-cols-2 gap-2 mb-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-2">
           <select aria-label="Tipo de movimiento" value={type} onChange={(e) => setType(e.target.value as "income" | "expense")} className="input-field px-3 py-2">
             <option value="expense">Gasto</option>
             <option value="income">Ingreso</option>

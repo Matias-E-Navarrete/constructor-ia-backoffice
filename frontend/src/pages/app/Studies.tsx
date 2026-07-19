@@ -108,7 +108,7 @@ export default function Studies() {
                 </div>
               </div>
               {logFor === s.id && (
-                <div className="mt-3 flex gap-2 items-center">
+                <div className="mt-3 flex flex-wrap gap-2 items-center">
                   <input
                     type="number"
                     value={duration}
@@ -120,7 +120,7 @@ export default function Studies() {
                     value={topic}
                     onChange={(e) => setTopic(e.target.value)}
                     placeholder="Tema (opcional)"
-                    className="input-field flex-1 px-2 py-1 text-sm"
+                    className="input-field flex-1 min-w-[8rem] px-2 py-1 text-sm"
                   />
                   <button onClick={() => handleLogSession(s.id)} className="btn-accent text-sm px-3 py-1.5">
                     Guardar

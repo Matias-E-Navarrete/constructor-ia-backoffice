@@ -210,6 +210,22 @@ export function IconAssistant(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function IconMenu(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base(props)}>
+      <path d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  );
+}
+
+export function IconClose(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base(props)}>
+      <path d="M6 6l12 12M18 6L6 18" />
+    </svg>
+  );
+}
+
 export function IconLogout(props: SVGProps<SVGSVGElement>) {
   return (
     <svg {...base(props)}>
