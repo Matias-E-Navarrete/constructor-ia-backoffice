@@ -12,6 +12,7 @@ import Habits from "./pages/app/Habits";
 import Panorama from "./pages/app/Panorama";
 import Workouts from "./pages/app/Workouts";
 import Studies from "./pages/app/Studies";
+import Assistant from "./pages/app/Assistant";
 import Finance from "./pages/app/Finance";
 import Family from "./pages/app/Family";
 import Coaching from "./pages/app/Coaching";
@@ -60,6 +61,7 @@ export default function App() {
         <Route path="habits/panorama" element={<Panorama />} />
         <Route path="workouts" element={<Workouts />} />
         <Route path="studies" element={<Studies />} />
+        <Route path="assistant" element={<Assistant />} />
         <Route path="finance" element={<Finance />} />
         <Route path="notes" element={<Notes />} />
         <Route path="notes/graph" element={<NotesGraph />} />

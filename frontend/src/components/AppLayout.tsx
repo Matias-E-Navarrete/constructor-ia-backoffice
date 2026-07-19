@@ -15,6 +15,7 @@ import {
   IconCoaching,
   IconAdmin,
   IconUpgrade,
+  IconAssistant,
   IconSun,
   IconMoon,
   IconLogout,
@@ -31,6 +32,7 @@ const navItems = [
   { to: "/app/notes", label: "Notas", icon: IconNotes },
   { to: "/app/family", label: "Familia", icon: IconFamily },
   { to: "/app/coaching", label: "Coaching", icon: IconCoaching },
+  { to: "/app/assistant", label: "Asistente", icon: IconAssistant },
 ];
 
 export default function AppLayout() {

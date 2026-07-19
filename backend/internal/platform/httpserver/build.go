@@ -53,6 +53,10 @@ import (
 	studiesapplication "rimu/backend/internal/studies/application"
 	studiesinfrastructure "rimu/backend/internal/studies/infrastructure"
 	studieshttp "rimu/backend/internal/studies/interfaces/http"
+
+	assistantapplication "rimu/backend/internal/assistant/application"
+	assistantinfrastructure "rimu/backend/internal/assistant/infrastructure"
+	assistanthttp "rimu/backend/internal/assistant/interfaces/http"
 )
 
 // Build is the composition root logic shared by cmd/api/main.go and the
@@ -89,6 +93,8 @@ func Build(ctx context.Context, cfg config.Config) (*chi.Mux, *pgxpool.Pool, err
 	routinesRepo := workoutsinfrastructure.NewPostgresRoutineRepository(pool)
 	studiesRepo := studiesinfrastructure.NewPostgresRepository(pool)
 	exchangeRates := financeapplication.NewExchangeRateProvider()
+	assistantRepo := assistantinfrastructure.NewPostgresRepository(pool)
+	assistantClient := assistantinfrastructure.NewAnthropicClient(cfg.AnthropicAPIKey)
 
 	userHandler := &userhttp.Handler{
 		Register:           &userapplication.RegisterUser{Repo: userRepo, IsAdminEmail: cfg.IsAdminEmail},
@@ -184,6 +190,12 @@ func Build(ctx context.Context, cfg config.Config) (*chi.Mux, *pgxpool.Pool, err
 		GetOverview:   &studiesapplication.GetStudyOverview{Repo: studiesRepo},
 	}
 
+	assistantHandler := &assistanthttp.Handler{
+		Send:  &assistantapplication.SendMessage{Repo: assistantRepo, Completer: assistantClient},
+		List:  &assistantapplication.ListMessages{Repo: assistantRepo},
+		Clear: &assistantapplication.ClearConversation{Repo: assistantRepo},
+	}
+
 	adminHandler := &adminhttp.Handler{
 		ListRoadmap:         &adminapplication.ListRoadmap{Repo: roadmapRepo},
 		CreateRoadmapItem:   &adminapplication.CreateRoadmapItem{Repo: roadmapRepo},
@@ -249,6 +261,12 @@ func Build(ctx context.Context, cfg config.Config) (*chi.Mux, *pgxpool.Pool, err
 			RequireModuleFlag:   feature("studies"),
 			RequireOverviewFlag: feature("studies.overview"),
 			RequirePro:          requirePro,
+		})
+
+		assistanthttp.Mount(api, assistantHandler, assistanthttp.Middlewares{
+			RequireAuth:       requireAuth,
+			RequireModuleFlag: feature("assistant"),
+			RequirePro:        requirePro,
 		})
 
 		adminhttp.Mount(api, adminHandler, requireAuth, requireAdmin)

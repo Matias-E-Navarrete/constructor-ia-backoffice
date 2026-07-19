@@ -201,6 +201,15 @@ export function IconArrowLeft(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+export function IconAssistant(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base(props)}>
+      <path d="M12 3.5l1.4 3.6 3.6 1.4-3.6 1.4L12 14l-1.4-3.6L7 9l3.6-1.4z" />
+      <path d="M18.5 14.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z" />
+    </svg>
+  );
+}
+
 export function IconLogout(props: SVGProps<SVGSVGElement>) {
   return (
     <svg {...base(props)}>
