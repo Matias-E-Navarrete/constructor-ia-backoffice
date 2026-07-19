@@ -24,9 +24,9 @@ function ProgressChart({ entries }: { entries: workoutsApi.Progress["entries"] }
   return (
     <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="max-w-full">
       <line x1={pad} y1={height - pad} x2={width - pad} y2={height - pad} stroke="currentColor" className="text-neutral-200 dark:text-neutral-800" strokeWidth={1} />
-      <polyline points={points.map((p) => p.join(",")).join(" ")} fill="none" stroke="#d946ef" strokeWidth={2} />
+      <polyline points={points.map((p) => p.join(",")).join(" ")} fill="none" stroke="#22c55e" strokeWidth={2} />
       {points.map(([x, y], i) => (
-        <circle key={i} cx={x} cy={y} r={3} fill="#d946ef" />
+        <circle key={i} cx={x} cy={y} r={3} fill="#22c55e" />
       ))}
     </svg>
   );

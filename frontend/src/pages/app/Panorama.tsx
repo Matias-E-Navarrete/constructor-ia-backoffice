@@ -36,7 +36,7 @@ function StreakRing({ habit }: { habit: habitsApi.PanoramaHabit }) {
           cy={40}
           r={radius}
           fill="none"
-          stroke="#d946ef"
+          stroke="#22c55e"
           strokeWidth={8}
           strokeLinecap="round"
           strokeDasharray={circumference}

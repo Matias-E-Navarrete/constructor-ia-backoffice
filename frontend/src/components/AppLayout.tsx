@@ -100,7 +100,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
           `mt-1 flex items-center gap-2.5 whitespace-nowrap px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 ${
             isActive
               ? "bg-accent text-white text-neon-white shadow-neon-sm"
-              : "text-accent-strong dark:text-accent-soft hover:bg-fuchsia-50 dark:hover:bg-fuchsia-950/40"
+              : "text-accent-strong dark:text-accent-soft hover:bg-green-50 dark:hover:bg-green-950/40"
           }`
         }
       >

@@ -12,14 +12,14 @@ const HEIGHT = 420;
 // Notes are the hub of the vault, so they get the one neon accent; every
 // other entity type stays a plain neutral dot to keep the graph mono-first.
 const kindColorLight: Record<string, string> = {
-  note: "#a21caf",
+  note: "#15803d",
   habit: "#a3a3a3",
   workout: "#a3a3a3",
   finance: "#a3a3a3",
 };
 
 const kindColorDark: Record<string, string> = {
-  note: "#e879f9",
+  note: "#4ade80",
   habit: "#737373",
   workout: "#737373",
   finance: "#737373",

@@ -23,7 +23,7 @@ select:focus-visible,
 textarea:focus-visible,
 button:focus-visible,
 a:focus-visible {
-  outline: 2px solid #d946ef;
+  outline: 2px solid #22c55e;
   outline-offset: 2px;
 }
 
@@ -78,7 +78,7 @@ html.dark ::-webkit-scrollbar-thumb {
   /* Glowing text — the "lit sign" look for accent-colored labels (badges,
      buttons on the accent fill, celebratory highlights). */
   .text-neon {
-    text-shadow: 0 0 10px rgba(217, 70, 239, 0.75), 0 0 2px rgba(217, 70, 239, 0.9);
+    text-shadow: 0 0 10px rgba(34, 197, 94, 0.75), 0 0 2px rgba(34, 197, 94, 0.9);
   }
   .text-neon-white {
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.65), 0 0 2px rgba(255, 255, 255, 0.8);
