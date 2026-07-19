@@ -7,36 +7,29 @@ import (
 
 var ErrUnknownCurrency = errors.New("finance: unknown currency")
 
-// demoRatesToUSD are illustrative, fixed exchange rates (units of currency
-// per 1 USD), standing in for a real live-rates provider. Good enough to
-// demonstrate "convert as you type" without an external API dependency.
-var demoRatesToUSD = map[string]float64{
-	"USD": 1,
-	"EUR": 0.92,
-	"GBP": 0.79,
-	"CLP": 950,
-	"BRL": 5.4,
-	"MXN": 17.0,
-	"ARS": 1000,
+type ConvertCurrency struct {
+	Rates *ExchangeRateProvider
 }
-
-type ConvertCurrency struct{}
 
 type ConversionResult struct {
 	ConvertedAmount float64
 	Rate            float64
 }
 
-// Execute converts `amount` of `from` currency into `to` currency.
+// Execute converts `amount` of `from` currency into `to` currency using the
+// current live (or last-known-good) USD-based rate table.
 func (uc *ConvertCurrency) Execute(ctx context.Context, amount float64, from, to string) (ConversionResult, error) {
-	fromRate, ok := demoRatesToUSD[from]
+	rates := uc.Rates.Rates(ctx)
+
+	fromRate, ok := rates[from]
 	if !ok {
 		return ConversionResult{}, ErrUnknownCurrency
 	}
-	toRate, ok := demoRatesToUSD[to]
+	toRate, ok := rates[to]
 	if !ok {
 		return ConversionResult{}, ErrUnknownCurrency
 	}
+
 	usd := amount / fromRate
 	converted := usd * toRate
 	rate := toRate / fromRate

@@ -88,6 +88,7 @@ func Build(ctx context.Context, cfg config.Config) (*chi.Mux, *pgxpool.Pool, err
 	accountsRepo := financeinfrastructure.NewPostgresAccountRepository(pool)
 	routinesRepo := workoutsinfrastructure.NewPostgresRoutineRepository(pool)
 	studiesRepo := studiesinfrastructure.NewPostgresRepository(pool)
+	exchangeRates := financeapplication.NewExchangeRateProvider()
 
 	userHandler := &userhttp.Handler{
 		Register:           &userapplication.RegisterUser{Repo: userRepo, IsAdminEmail: cfg.IsAdminEmail},
@@ -135,7 +136,7 @@ func Build(ctx context.Context, cfg config.Config) (*chi.Mux, *pgxpool.Pool, err
 		ExportCSV:     &financeapplication.ExportTransactions{Repo: financeRepo},
 		CreateAccount: &financeapplication.CreateAccount{Repo: accountsRepo},
 		ListAccounts:  &financeapplication.ListAccounts{Repo: accountsRepo},
-		Convert:       &financeapplication.ConvertCurrency{},
+		Convert:       &financeapplication.ConvertCurrency{Rates: exchangeRates},
 		GetUpcoming:   &financeapplication.GetUpcomingBills{Repo: financeRepo},
 		ExportPDF:     &financeapplication.ExportPDF{Repo: financeRepo},
 	}
