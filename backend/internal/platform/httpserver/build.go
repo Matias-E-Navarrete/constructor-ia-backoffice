@@ -57,6 +57,10 @@ import (
 	assistantapplication "rimu/backend/internal/assistant/application"
 	assistantinfrastructure "rimu/backend/internal/assistant/infrastructure"
 	assistanthttp "rimu/backend/internal/assistant/interfaces/http"
+
+	billingapplication "rimu/backend/internal/billing/application"
+	billinginfrastructure "rimu/backend/internal/billing/infrastructure"
+	billinghttp "rimu/backend/internal/billing/interfaces/http"
 )
 
 // Build is the composition root logic shared by cmd/api/main.go and the
@@ -95,6 +99,7 @@ func Build(ctx context.Context, cfg config.Config) (*chi.Mux, *pgxpool.Pool, err
 	exchangeRates := financeapplication.NewExchangeRateProvider()
 	assistantRepo := assistantinfrastructure.NewPostgresRepository(pool)
 	assistantClient := assistantinfrastructure.NewAnthropicClient(cfg.AnthropicAPIKey)
+	stripeClient := billinginfrastructure.NewStripeClient(cfg.StripeSecretKey, cfg.StripePriceIDPro, cfg.StripeWebhookKey)
 
 	userHandler := &userhttp.Handler{
 		Register:           &userapplication.RegisterUser{Repo: userRepo, IsAdminEmail: cfg.IsAdminEmail},
@@ -196,6 +201,17 @@ func Build(ctx context.Context, cfg config.Config) (*chi.Mux, *pgxpool.Pool, err
 		Clear: &assistantapplication.ClearConversation{Repo: assistantRepo},
 	}
 
+	applyProUpgrade := &billingapplication.ApplyProUpgrade{Users: userRepo}
+	billingHandler := &billinghttp.Handler{
+		Configured: stripeClient.Configured(),
+		Checkout: &billingapplication.CreateCheckoutSession{
+			Stripe:     stripeClient,
+			SuccessURL: cfg.PublicAppURL + "/app/upgrade?checkout=success",
+			CancelURL:  cfg.PublicAppURL + "/app/upgrade?checkout=cancelled",
+		},
+		Webhook: &billingapplication.HandleWebhook{Verifier: stripeClient, Upgrade: applyProUpgrade},
+	}
+
 	adminHandler := &adminhttp.Handler{
 		ListRoadmap:         &adminapplication.ListRoadmap{Repo: roadmapRepo},
 		CreateRoadmapItem:   &adminapplication.CreateRoadmapItem{Repo: roadmapRepo},
@@ -268,6 +284,8 @@ func Build(ctx context.Context, cfg config.Config) (*chi.Mux, *pgxpool.Pool, err
 			RequireModuleFlag: feature("assistant"),
 			RequirePro:        requirePro,
 		})
+
+		billinghttp.Mount(api, billingHandler, billinghttp.Middlewares{RequireAuth: requireAuth})
 
 		adminhttp.Mount(api, adminHandler, requireAuth, requireAdmin)
 	})

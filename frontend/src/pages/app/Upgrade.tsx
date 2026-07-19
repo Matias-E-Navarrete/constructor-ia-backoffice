@@ -1,12 +1,40 @@
+import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import * as authApi from "../../api/auth";
+import * as billingApi from "../../api/billing";
 
 export default function Upgrade() {
   const { user, refreshUser } = useAuth();
+  const [searchParams] = useSearchParams();
+  const [realCheckout, setRealCheckout] = useState(false);
+  const [redirecting, setRedirecting] = useState(false);
+  const checkoutStatus = searchParams.get("checkout");
+
+  useEffect(() => {
+    billingApi
+      .getBillingConfig()
+      .then((cfg) => setRealCheckout(cfg.configured))
+      .catch(() => setRealCheckout(false));
+  }, []);
+
+  useEffect(() => {
+    if (checkoutStatus === "success") refreshUser();
+  }, [checkoutStatus]);
 
   async function handleUpgrade() {
-    await authApi.upgrade();
-    await refreshUser();
+    if (!realCheckout) {
+      await authApi.upgrade();
+      await refreshUser();
+      return;
+    }
+    setRedirecting(true);
+    try {
+      const { checkout_url } = await billingApi.createCheckoutSession();
+      window.location.href = checkout_url;
+    } catch {
+      setRedirecting(false);
+    }
   }
 
   if (user?.plan === "pro") {
@@ -32,12 +60,23 @@ export default function Upgrade() {
           <li>Resumen financiero, próximas cuentas y exportación</li>
           <li>Grafo y exportación del vault de notas</li>
           <li>Crear grupos de coaching</li>
+          <li>Asistente de IA</li>
         </ul>
-        <button onClick={handleUpgrade} className="btn-accent w-full py-2">
-          Mejorar ahora
+        {checkoutStatus === "success" && (
+          <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
+            Pago recibido. Si tu plan todavía figura como Free, esperá unos segundos y recargá la página.
+          </p>
+        )}
+        {checkoutStatus === "cancelled" && (
+          <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">Cancelaste el pago. Podés intentarlo de nuevo cuando quieras.</p>
+        )}
+        <button onClick={handleUpgrade} disabled={redirecting} className="btn-accent w-full py-2">
+          {redirecting ? "Redirigiendo a Stripe..." : "Mejorar ahora"}
         </button>
         <p className="text-xs text-neutral-400 dark:text-neutral-500 mt-2 text-center">
-          Demo: activa el plan Pro al instante (sin pasarela de pago real).
+          {realCheckout
+            ? "Vas a ser redirigido a Stripe para completar el pago de forma segura."
+            : "Demo: activa el plan Pro al instante (sin pasarela de pago real todavía)."}
         </p>
       </div>
     </div>
