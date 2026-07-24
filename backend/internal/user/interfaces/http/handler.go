@@ -10,9 +10,14 @@ import (
 )
 
 type Handler struct {
-	Register           *application.RegisterUser
-	Login              *application.AuthenticateUser
-	Upgrade            *application.UpgradePlan
+	Register *application.RegisterUser
+	Login    *application.AuthenticateUser
+	Upgrade  *application.UpgradePlan
+	// BillingConfigured reports whether real Stripe billing is wired up for
+	// this deployment. When true, the mock instant-upgrade endpoint must
+	// refuse to run so plan upgrades can only happen via a paid Stripe
+	// checkout + webhook.
+	BillingConfigured  bool
 	UpdatePlannerHours *application.UpdatePlannerHours
 }
 
@@ -52,6 +57,11 @@ func (h *Handler) HandleMe(w nethttp.ResponseWriter, r *nethttp.Request) {
 }
 
 func (h *Handler) HandleUpgrade(w nethttp.ResponseWriter, r *nethttp.Request) {
+	if h.BillingConfigured {
+		httpkit.WriteError(w, nethttp.StatusForbidden, "billing_configured", "this deployment has real billing configured; upgrade via /api/billing/checkout")
+		return
+	}
+
 	user, _ := httpmiddleware.UserFromContext(r.Context())
 	updated, err := h.Upgrade.Execute(r.Context(), user.ID)
 	if err != nil {

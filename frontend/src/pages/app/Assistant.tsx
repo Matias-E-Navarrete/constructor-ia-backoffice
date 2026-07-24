@@ -10,6 +10,7 @@ export default function Assistant() {
   const [disabled, setDisabled] = useState(false);
   const [locked, setLocked] = useState(false);
   const [notConfigured, setNotConfigured] = useState(false);
+  const [sendError, setSendError] = useState(false);
   const [draft, setDraft] = useState("");
   const [sending, setSending] = useState(false);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -34,16 +35,25 @@ export default function Assistant() {
   async function handleSend() {
     if (!draft.trim() || sending) return;
     const content = draft.trim();
+    const pendingId = `pending-${Date.now()}`;
     setDraft("");
     setNotConfigured(false);
-    setMessages((m) => [...m, { id: `pending-${Date.now()}`, role: "user", content, created_at: new Date().toISOString() }]);
+    setSendError(false);
+    setMessages((m) => [...m, { id: pendingId, role: "user", content, created_at: new Date().toISOString() }]);
     setSending(true);
     try {
       const reply = await assistantApi.sendMessage(content);
       setMessages((m) => [...m, reply]);
     } catch (err) {
-      if (err instanceof assistantApi.AssistantNotConfiguredError) setNotConfigured(true);
-      else if (err instanceof UpgradeRequiredError) setLocked(true);
+      if (err instanceof assistantApi.AssistantNotConfiguredError) {
+        setNotConfigured(true);
+      } else if (err instanceof UpgradeRequiredError) {
+        setLocked(true);
+      } else {
+        setMessages((m) => m.filter((msg) => msg.id !== pendingId));
+        setDraft(content);
+        setSendError(true);
+      }
     } finally {
       setSending(false);
     }
@@ -91,6 +101,11 @@ export default function Assistant() {
               El asistente todavía no está configurado en este entorno (falta la API key). Tu mensaje quedó guardado.
             </p>
           )}
+          {sendError && (
+            <p className="text-xs text-red-500 dark:text-red-400 text-center max-w-xl">
+              No se pudo enviar el mensaje. Intentá de nuevo.
+            </p>
+          )}
         </div>
       )}
 
@@ -135,6 +150,9 @@ export default function Assistant() {
             <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-2 px-1">
               El asistente todavía no está configurado en este entorno (falta la API key). Tu mensaje quedó guardado.
             </p>
+          )}
+          {sendError && (
+            <p className="text-xs text-red-500 dark:text-red-400 mb-2 px-1">No se pudo enviar el mensaje. Intentá de nuevo.</p>
           )}
 
           <div className="pt-3 border-t border-neutral-200 dark:border-neutral-800">{inputBar}</div>

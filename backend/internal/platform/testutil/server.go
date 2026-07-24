@@ -26,13 +26,33 @@ type Server struct {
 
 func NewServer(t *testing.T) *Server {
 	t.Helper()
+	return newServer(t, config.Config{})
+}
+
+// NewServerWithStripeConfigured boots the server as if a real Stripe billing
+// integration were wired up, so tests can assert that endpoints only meant
+// to run on unconfigured (mock-billing) deployments correctly refuse to run.
+func NewServerWithStripeConfigured(t *testing.T) *Server {
+	t.Helper()
+	return newServer(t, config.Config{
+		StripeSecretKey:  "sk_test_fake",
+		StripePriceIDPro: "price_fake",
+		StripeWebhookKey: "whsec_fake",
+	})
+}
+
+func newServer(t *testing.T, overrides config.Config) *Server {
+	t.Helper()
 
 	cfg := config.Config{
-		DatabaseURL: testDatabaseURL(),
-		JWTSecret:   "test-secret",
-		AdminEmails: []string{"admin@rimu.test"},
-		BackendDir:  ".",
-		FrontendDir: ".",
+		DatabaseURL:      testDatabaseURL(),
+		JWTSecret:        "test-secret",
+		AdminEmails:      []string{"admin@rimu.test"},
+		BackendDir:       ".",
+		FrontendDir:      ".",
+		StripeSecretKey:  overrides.StripeSecretKey,
+		StripePriceIDPro: overrides.StripePriceIDPro,
+		StripeWebhookKey: overrides.StripeWebhookKey,
 	}
 
 	router, pool, err := httpserver.Build(context.Background(), cfg)

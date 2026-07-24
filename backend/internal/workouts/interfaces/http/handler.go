@@ -76,8 +76,14 @@ func (h *Handler) HandleList(w nethttp.ResponseWriter, r *nethttp.Request) {
 }
 
 func (h *Handler) HandleGet(w nethttp.ResponseWriter, r *nethttp.Request) {
+	user, _ := httpmiddleware.UserFromContext(r.Context())
 	id := chi.URLParam(r, "id")
-	session, err := h.GetSession.Execute(r.Context(), id)
+
+	session, err := h.GetSession.Execute(r.Context(), user.ID, id)
+	if err == application.ErrNoCoachAccess {
+		httpkit.WriteError(w, nethttp.StatusForbidden, "forbidden", err.Error())
+		return
+	}
 	if err != nil {
 		httpkit.WriteError(w, nethttp.StatusNotFound, "not_found", err.Error())
 		return

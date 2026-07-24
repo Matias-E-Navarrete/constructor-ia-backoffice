@@ -105,6 +105,7 @@ func Build(ctx context.Context, cfg config.Config) (*chi.Mux, *pgxpool.Pool, err
 		Register:           &userapplication.RegisterUser{Repo: userRepo, IsAdminEmail: cfg.IsAdminEmail},
 		Login:              &userapplication.AuthenticateUser{Repo: userRepo, JWTSecret: cfg.JWTSecret},
 		Upgrade:            &userapplication.UpgradePlan{Repo: userRepo},
+		BillingConfigured:  stripeClient.Configured(),
 		UpdatePlannerHours: &userapplication.UpdatePlannerHours{Repo: userRepo},
 	}
 
@@ -130,7 +131,7 @@ func Build(ctx context.Context, cfg config.Config) (*chi.Mux, *pgxpool.Pool, err
 	workoutsHandler := &workoutshttp.Handler{
 		LogSession:         &workoutsapplication.LogSession{Repo: workoutsRepo},
 		ListSessions:       &workoutsapplication.ListSessions{Repo: workoutsRepo, Groups: groupsRepo},
-		GetSession:         &workoutsapplication.GetSession{Repo: workoutsRepo},
+		GetSession:         &workoutsapplication.GetSession{Repo: workoutsRepo, Groups: groupsRepo},
 		Delete:             &workoutsapplication.DeleteSession{Repo: workoutsRepo},
 		GetProgress:        &workoutsapplication.GetExerciseProgress{Repo: workoutsRepo},
 		GetPersonalRecords: &workoutsapplication.GetPersonalRecords{Repo: workoutsRepo},

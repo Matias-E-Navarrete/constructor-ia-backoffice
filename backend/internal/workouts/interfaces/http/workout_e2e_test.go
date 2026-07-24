@@ -47,3 +47,33 @@ func TestWorkouts_LogSessionHistoryProgressGating(t *testing.T) {
 		t.Fatalf("progress on pro plan: status=%d body=%+v", status, progress)
 	}
 }
+
+func TestWorkouts_GetSessionOwnershipGating(t *testing.T) {
+	s := testutil.NewServer(t)
+	aliceToken := s.RegisterAndLogin("alice-get@example.com", "password123")
+	bobToken := s.RegisterAndLogin("bob-get@example.com", "password123")
+
+	body := map[string]interface{}{
+		"session_date": "2026-07-01",
+		"sets": []map[string]interface{}{
+			{"exercise_name": "Sentadilla", "set_number": 1, "reps": 10, "weight_kg": 60},
+		},
+	}
+	var session struct {
+		ID string `json:"id"`
+	}
+	status := s.Do(http.MethodPost, "/api/workouts", aliceToken, body, &session)
+	if status != http.StatusCreated || session.ID == "" {
+		t.Fatalf("log session: status=%d body=%+v", status, session)
+	}
+
+	status = s.Do(http.MethodGet, "/api/workouts/"+session.ID, aliceToken, nil, nil)
+	if status != http.StatusOK {
+		t.Fatalf("owner get: expected 200, got %d", status)
+	}
+
+	status = s.Do(http.MethodGet, "/api/workouts/"+session.ID, bobToken, nil, nil)
+	if status != http.StatusForbidden {
+		t.Fatalf("non-owner get without coach access: expected 403, got %d", status)
+	}
+}

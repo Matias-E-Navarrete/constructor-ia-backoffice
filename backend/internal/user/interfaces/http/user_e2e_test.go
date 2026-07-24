@@ -47,3 +47,21 @@ func TestUser_RegisterLoginMeUpgrade(t *testing.T) {
 		t.Fatalf("upgrade: expected plan=pro, got status=%d body=%+v", status, upgraded)
 	}
 }
+
+func TestUser_MockUpgradeRefusedWhenBillingConfigured(t *testing.T) {
+	s := testutil.NewServerWithStripeConfigured(t)
+	token := s.RegisterAndLogin("carol@example.com", "password123")
+
+	status := s.Do(http.MethodPost, "/api/me/upgrade", token, nil, nil)
+	if status != http.StatusForbidden {
+		t.Fatalf("mock upgrade with real billing configured: expected 403, got %d", status)
+	}
+
+	var me struct {
+		Plan string `json:"plan"`
+	}
+	status = s.Do(http.MethodGet, "/api/me", token, nil, &me)
+	if status != http.StatusOK || me.Plan != "free" {
+		t.Fatalf("plan should stay free after refused mock upgrade: status=%d body=%+v", status, me)
+	}
+}
